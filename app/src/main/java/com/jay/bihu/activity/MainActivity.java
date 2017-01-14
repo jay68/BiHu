@@ -3,6 +3,7 @@ package com.jay.bihu.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +22,7 @@ import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionRvAdapter;
 import com.jay.bihu.bean.UserBean;
 import com.jay.bihu.config.ApiConfig;
+import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
@@ -109,6 +110,7 @@ public class MainActivity extends BaseActivity {
                     case R.id.favorite:
                         break;
                     case R.id.avatar:
+                        changeAvatar();
                         break;
                     case R.id.logout:
                         logout();
@@ -124,19 +126,27 @@ public class MainActivity extends BaseActivity {
         TextView username = (TextView) view.findViewById(R.id.username);
 
         username.setText(mUser.getUsername());
-//        if (mUser.getAvatar() != null) {
-//            HttpUtils.sendHttpRequest(mUser.getAvatar(), "", new HttpUtils.Callback() {
-//                @Override
-//                public void onResponse(HttpUtils.Response response) {
-//
-//                }
-//
-//                @Override
-//                public void onFail(IOException e) {
-//                    showMessage(e.getMessage());
-//                }
-//            });
-//        }
+        if (mUser.getAvatarBitmap() == null) {
+            if (!mUser.getAvatar().equals("null")) {
+                HttpUtils.sendHttpRequest(mUser.getAvatar(), "", new HttpUtils.Callback() {
+                    @Override
+                    public void onResponse(HttpUtils.Response response) {
+                        Bitmap bm = BitmapUtils.getBitmap(response.bytes());
+                        avatar.setImageBitmap(bm);
+                        mUser.setAvatarBitmap(bm);
+                    }
+
+                    @Override
+                    public void onFail(IOException e) {
+                        showMessage(e.getMessage());
+                    }
+                });
+            }
+        } else avatar.setImageBitmap(mUser.getAvatarBitmap());
+    }
+
+    private void changeAvatar() {
+
     }
 
     private void logout() {

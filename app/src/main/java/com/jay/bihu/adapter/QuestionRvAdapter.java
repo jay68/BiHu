@@ -58,7 +58,9 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_QUESTION:
-                ((QuestionListViewHolder) holder).updateAllTextView(mQuestionList.get(position));
+                QuestionListViewHolder questionListViewHolder = (QuestionListViewHolder) holder;
+                questionListViewHolder.updateAllTextView(mQuestionList.get(position));
+                questionListViewHolder.updateAllImageView(mQuestionList.get(position));
                 break;
             case TYPE_TAIL:
                 ((TailViewHolder) holder).loading(this, mQuestionList.size() / 20);

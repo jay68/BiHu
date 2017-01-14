@@ -1,5 +1,6 @@
 package com.jay.bihu.holder;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,14 +9,18 @@ import android.widget.TextView;
 
 import com.jay.bihu.R;
 import com.jay.bihu.bean.QuestionBean;
+import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.DateUtils;
+import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.view.CircleImageView;
+
+import java.io.IOException;
 
 /**
  * Created by Jay on 2017/1/14.
  */
 
-public class QuestionListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class QuestionListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private CircleImageView mAvatar;
     private ImageView mQuestionImage;
 
@@ -54,9 +59,28 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         mDate.setText(DateUtils.getDateDescription(question.getDate()));
         mQuestionTitle.setText(question.getTitle());
         mQuestionDetail.setText(question.getContent());
-        //mExcitingCount.setText(question.getExciting());
-        //mNaiveCount.setText(question.getNaive());
-        //mAnswerCount.setText(question.getAnswerCount());
+        mExcitingCount.setText("(" + question.getExciting() + ")");
+        mNaiveCount.setText("(" + question.getNaive() + ")");
+        mAnswerCount.setText("(" + question.getAnswerCount() + ")");
+    }
+
+    public void updateAllImageView(final QuestionBean question) {
+        if (question.getAuthorAvatarBitmap() != null)
+            mAvatar.setImageBitmap(question.getAuthorAvatarBitmap());
+        else if (!question.getAuthorAvatar().equals("null")) {
+            HttpUtils.sendHttpRequest(question.getAuthorAvatar(), "", new HttpUtils.Callback() {
+                @Override
+                public void onResponse(HttpUtils.Response response) {
+                    Bitmap bitmap = BitmapUtils.getBitmap(response.bytes());
+                    mAvatar.setImageBitmap(bitmap);
+                    question.setAuthorAvatarBitmap(bitmap);
+                }
+
+                @Override
+                public void onFail(IOException e) {
+                }
+            });
+        }
     }
 
     public void addOnClickListener() {
@@ -65,18 +89,6 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         mAnswerButton.setOnClickListener(this);
         mFavoriteButton.setOnClickListener(this);
     }
-
-//    public void getQuestionAndAvatarImage(QuestionBean questionBean) {
-//        HttpUtils.sendHttpRequest(questionBean.getAuthorAvatar(), "", new HttpUtils.Callback() {
-//            @Override
-//            public void onResponse(HttpUtils.Response response) {
-//            }
-//
-//            @Override
-//            public void onFail(IOException e) {
-//            }
-//        });
-//    }
 
     @Override
     public void onClick(View v) {

@@ -1,5 +1,7 @@
 package com.jay.bihu.bean;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Jay on 2017/1/13.
  */
@@ -16,6 +18,7 @@ public class UserBean {
     private String username;
     private String avatar;
     private String token;
+    private Bitmap avatarBitmap;
 
     public int getId() {
         return id;
@@ -47,5 +50,13 @@ public class UserBean {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Bitmap getAvatarBitmap() {
+        return avatarBitmap;
+    }
+
+    public void setAvatarBitmap(Bitmap avatarBitmap) {
+        this.avatarBitmap = avatarBitmap;
     }
 }

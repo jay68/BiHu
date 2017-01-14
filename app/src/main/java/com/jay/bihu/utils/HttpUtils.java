@@ -88,6 +88,7 @@ public class HttpUtils {
                 mData = object.getString("data");
             } catch (JSONException e) {
                 e.printStackTrace();
+                mData = response;
             }
         }
 

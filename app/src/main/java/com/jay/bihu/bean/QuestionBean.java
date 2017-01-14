@@ -1,5 +1,7 @@
 package com.jay.bihu.bean;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Jay on 2017/1/14.
  */
@@ -30,6 +32,8 @@ public class QuestionBean {
     private int naive;
     private String authorName;
     private String authorAvatar;
+    private Bitmap authorAvatarBitmap;
+    private Bitmap questionBitmap;
 
     public int getId() {
         return id;
@@ -117,5 +121,21 @@ public class QuestionBean {
 
     public void setAuthorAvatar(String authorAvatar) {
         this.authorAvatar = authorAvatar;
+    }
+
+    public Bitmap getAuthorAvatarBitmap() {
+        return authorAvatarBitmap;
+    }
+
+    public void setAuthorAvatarBitmap(Bitmap authorAvatarBitmap) {
+        this.authorAvatarBitmap = authorAvatarBitmap;
+    }
+
+    public Bitmap getQuestionBitmap() {
+        return questionBitmap;
+    }
+
+    public void setQuestionBitmap(Bitmap questionBitmap) {
+        this.questionBitmap = questionBitmap;
     }
 }
