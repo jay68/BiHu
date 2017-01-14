@@ -19,4 +19,6 @@ public class ApiConfig {
     public static final String CANCEL_NAIVE = "https://api.caoyue.com.cn/bihu/cancelNaive.php";
     public static final String UPLOAD_IMAGE = "https://api.caoyue.com.cn/bihu/newImage.php";
     public static final String GET_IMAGE = "https://api.caoyue.com.cn/bihu/getImage.php";
+    public static final String FAVORITE_LIST = "https://api.caoyue.com.cn/bihu/getFavoriteList.php";    //收藏
+    public static final String CANCEL_FAVORITE = "https://api.caoyue.com.cn/bihu/cancelFavorite.php";
 }

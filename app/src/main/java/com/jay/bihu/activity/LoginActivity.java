@@ -5,15 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jay.bihu.R;
+import com.jay.bihu.bean.UserBean;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
+import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.utils.NetWorkUtils;
 import com.jay.bihu.view.LoginDialog;
 
@@ -121,7 +124,7 @@ public class LoginActivity extends BaseActivity {
     private void checkResponseStatusCode(int statusCode, final HttpUtils.Response response) {
         switch (statusCode) {
             case 200:
-                showMessage("欢迎来到逼乎社区");
+                showMessage("欢迎来到逼乎社区", Toast.LENGTH_SHORT);
                 if (mDialog != null && mDialog.isShowing()) {
                     mDialog.dismiss();
                     String username = mUsernameWrapper.getEditText().getText().toString();
@@ -131,7 +134,7 @@ public class LoginActivity extends BaseActivity {
                     mEditor.putBoolean("isLogin", true);
                     mEditor.apply();
                 }
-                startNextActivity();
+                startNextActivity(response.string());
                 break;
             case 400:
                 mUsernameWrapper.setError(response.message());
@@ -145,8 +148,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void startNextActivity() {
+    private void startNextActivity(String data) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("data", data);
         startActivity(intent);
         finish();
     }

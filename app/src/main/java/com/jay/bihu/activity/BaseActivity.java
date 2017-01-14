@@ -24,7 +24,11 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollector.removeActivity(this.getLocalClassName().replace("activity.", ""));
     }
 
-    protected void showMessage(final String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    protected void showMessage(String message, int length) {
+        Toast.makeText(this, message, length).show();
+    }
+
+    protected void showMessage(String message) {
+        showMessage(message, Toast.LENGTH_LONG);
     }
 }
