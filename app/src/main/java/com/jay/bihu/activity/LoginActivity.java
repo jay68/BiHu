@@ -103,6 +103,7 @@ public class LoginActivity extends BaseActivity {
 
     private void sendHttpRequest(String address, String username, String password) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("登录中...");
         progressDialog.show();
 
         HttpUtils.sendHttpRequest(address, "username=" + username + "&password=" + password, new HttpUtils.Callback() {

@@ -11,7 +11,7 @@
             android:title="@string/question"/>
         <item
             android:id="@+id/favorite"
-            android:icon="@mipmap/default_avatar"
+            android:icon="@drawable/ic_favorite_pink_24dp"
             android:title="@string/my_favorite"/>
         <item
             android:id="@+id/avatar"
