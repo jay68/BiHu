@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.jay.bihu.R;
@@ -21,8 +19,6 @@ import java.io.IOException;
 
 public class LoginActivity extends BaseActivity {
     private LoginDialog mDialog;
-    private TextInputLayout mUsernameWrapper;
-    private TextInputLayout mPasswordWrapper;
 
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
@@ -41,34 +37,31 @@ public class LoginActivity extends BaseActivity {
 
     private void initDialog() {
         mDialog.show();
-        //注册
-        Button register = (Button) mDialog.findViewById(R.id.register);
-        register.setOnClickListener(new View.OnClickListener() {
+        mDialog.getMessageTextView().setText(R.string.welcome);
+        mDialog.setRegisterButton(R.string.register, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = mUsernameWrapper.getEditText().getText().toString();
-                String password = mPasswordWrapper.getEditText().getText().toString();
+                String username = mDialog.getUsernameWrapper().getEditText().getText().toString();
+                String password = mDialog.getPasswordWrapper().getEditText().getText().toString();
                 register(username, password);
             }
         });
-        //登录
-        Button login = (Button) mDialog.findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
+        mDialog.setLoginButton(R.string.login, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = mUsernameWrapper.getEditText().getText().toString();
-                String password = mPasswordWrapper.getEditText().getText().toString();
+                String username = mDialog.getUsernameWrapper().getEditText().getText().toString();
+                String password = mDialog.getPasswordWrapper().getEditText().getText().toString();
                 login(username, password);
             }
         });
 
-        mUsernameWrapper = (TextInputLayout) mDialog.findViewById(R.id.usernameWrapper);
-        mPasswordWrapper = (TextInputLayout) mDialog.findViewById(R.id.passwordWrapper);
+        mDialog.addUsernameWrapper(R.string.hint_username);
+        mDialog.addPasswordWrapper(R.string.hint_password);
 
         String username = mPreferences.getString("username", "");
         String password = mPreferences.getString("password", "");
-        mUsernameWrapper.getEditText().setText(username);
-        mPasswordWrapper.getEditText().setText(password);
+        mDialog.getUsernameWrapper().getEditText().setText(username);
+        mDialog.getPasswordWrapper().getEditText().setText(password);
         boolean isLogin = mPreferences.getBoolean("isLogin", false);
         if (isLogin && NetWorkUtils.isNetworkConnected(this))
             login(username, password);
@@ -81,11 +74,11 @@ public class LoginActivity extends BaseActivity {
         }
 
         if (username.length() < 1) {
-            mUsernameWrapper.setError("用户名过短");
+            mDialog.getUsernameWrapper().setError("用户名过短");
             return;
         }
         if (password.length() < 5) {
-            mPasswordWrapper.setError("密码过短");
+            mDialog.getPasswordWrapper().setError("密码过短");
             return;
         }
         loginOrRegister(ApiConfig.REGISTER, username, password);
@@ -114,7 +107,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFail(IOException e) {
                 e.printStackTrace();
-                showMessage(e.getMessage());
+                showMessage(e.toString());
                 progressDialog.dismiss();
             }
         });
@@ -124,19 +117,19 @@ public class LoginActivity extends BaseActivity {
         switch (statusCode) {
             case 200:
                 showMessage("欢迎来到逼乎社区", Toast.LENGTH_SHORT);
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
-                    String username = mUsernameWrapper.getEditText().getText().toString();
-                    String password = mPasswordWrapper.getEditText().getText().toString();
-                    mEditor.putString("username", username);
-                    mEditor.putString("password", password);
-                    mEditor.putBoolean("isLogin", true);
-                    mEditor.apply();
-                }
-                startNextActivity(response.string());
+                String username = mDialog.getUsernameWrapper().getEditText().getText().toString();
+                String password = mDialog.getPasswordWrapper().getEditText().getText().toString();
+                mEditor.putString("username", username);
+                mEditor.putString("password", password);
+                mEditor.putBoolean("isLogin", true);
+                mEditor.apply();
+                Bundle data = new Bundle();
+                data.putString("data", response.bodyString());
+                activityStart(MainActivity.class, data);
+                finish();
                 break;
             case 400:
-                mUsernameWrapper.setError(response.message());
+                mDialog.getPasswordWrapper().setError(response.getInfo());
                 break;
             case 401:
                 showMessage(response.message());
@@ -145,13 +138,6 @@ public class LoginActivity extends BaseActivity {
                 showMessage(response.message());
                 break;
         }
-    }
-
-    private void startNextActivity(String data) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("data", data);
-        startActivity(intent);
-        finish();
     }
 
     @Override

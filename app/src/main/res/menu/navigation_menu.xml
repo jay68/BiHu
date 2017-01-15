@@ -14,12 +14,21 @@
             android:icon="@drawable/ic_favorite_pink_24dp"
             android:title="@string/my_favorite"/>
         <item
-            android:id="@+id/avatar"
-            android:icon="@drawable/ic_face_gray_24dp"
-            android:title="@string/change_avatar"/>
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/ic_exit_gray_24dp"
-            android:title="@string/logout"/>
+            android:title="账户管理">
+            <menu>
+                <item
+                    android:id="@+id/avatar"
+                    android:icon="@drawable/ic_face_gray_24dp"
+                    android:title="@string/change_avatar"/>
+                <item
+                    android:id="@+id/changePassword"
+                    android:title="更改密码"
+                    android:icon="@drawable/ic_key_gray_24dp"/>
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_exit_gray_24dp"
+                    android:title="@string/logout"/>
+            </menu>
+        </item>
     </group>
 </menu>

@@ -4,9 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,16 +22,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionRvAdapter;
-import com.jay.bihu.bean.UserBean;
+import com.jay.bihu.data.User;
 import com.jay.bihu.config.ApiConfig;
-import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
+import com.jay.bihu.view.LoginDialog;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MainActivity extends BaseActivity {
@@ -35,7 +43,7 @@ public class MainActivity extends BaseActivity {
     private RecyclerView mQuestionRv;
     private SwipeRefreshLayout mRefreshLayout;
 
-    private UserBean mUser;
+    private User mUser;
     private QuestionRvAdapter mQuestionRvAdapter;
 
     @Override
@@ -43,7 +51,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mUser = JsonParser.getUser(getIntent().getStringExtra("data"));
+        mUser = JsonParser.getUser(getIntent().getBundleExtra("data").getString("data"));
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.navigationView);
         mQuestionRv = (RecyclerView) findViewById(R.id.questionRv);
@@ -65,12 +73,13 @@ public class MainActivity extends BaseActivity {
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
-                            mQuestionRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.string()));
+                            mQuestionRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.bodyString()));
+                        else showMessage(response.message());
                     }
 
                     @Override
                     public void onFail(IOException e) {
-                        showMessage(e.getMessage());
+                        showMessage(e.toString());
                         mRefreshLayout.setRefreshing(false);
                     }
                 });
@@ -87,19 +96,20 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    mQuestionRvAdapter = new QuestionRvAdapter(JsonParser.getQuestionList(response.string()));
+                    mQuestionRvAdapter = new QuestionRvAdapter(JsonParser.getQuestionList(response.bodyString()));
                     mQuestionRv.setAdapter(mQuestionRvAdapter);
-                }
+                } else showMessage(response.message());
             }
 
             @Override
             public void onFail(IOException e) {
-                showMessage(e.getMessage());
+                showMessage(e.toString());
             }
         });
     }
 
     private void setUpNavigationView() {
+        //menu
         mNavigationView.setCheckedItem(R.id.home);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -110,7 +120,10 @@ public class MainActivity extends BaseActivity {
                     case R.id.favorite:
                         break;
                     case R.id.avatar:
-                        changeAvatar();
+                        upLoadAvatar();
+                        break;
+                    case R.id.changePassword:
+                        changePassword();
                         break;
                     case R.id.logout:
                         logout();
@@ -121,39 +134,66 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        //header
         View view = mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        final CircleImageView avatar = (CircleImageView) view.findViewById(R.id.avatar);
+        CircleImageView avatar = (CircleImageView) view.findViewById(R.id.avatar);
         TextView username = (TextView) view.findViewById(R.id.username);
 
         username.setText(mUser.getUsername());
-        if (mUser.getAvatarBitmap() == null) {
-            if (!mUser.getAvatar().equals("null")) {
-                HttpUtils.sendHttpRequest(mUser.getAvatar(), "", new HttpUtils.Callback() {
+        //获取头像
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upLoadAvatar();
+            }
+        });
+
+    }
+
+    private void upLoadAvatar() {
+
+    }
+
+    private void changePassword() {
+        final LoginDialog dialog = new LoginDialog(this);
+        dialog.show();
+        dialog.getMessageTextView().setText("更改密码");
+        dialog.addPasswordWrapper("新" + getString(R.string.hint_password));
+        dialog.setLoginButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String password = dialog.getPasswordWrapper().getEditText().getText().toString();
+                if (password.length() < 5) {
+                    dialog.getPasswordWrapper().setError("密码过短");
+                    return;
+                }
+                String param = "token=" + mUser.getToken() + "&password=" + password;
+                HttpUtils.sendHttpRequest(ApiConfig.CHANGE_PASSWORD, param, new HttpUtils.Callback() {
                     @Override
                     public void onResponse(HttpUtils.Response response) {
-                        Bitmap bm = BitmapUtils.getBitmap(response.bytes());
-                        avatar.setImageBitmap(bm);
-                        mUser.setAvatarBitmap(bm);
+                        if (response.isSuccess()) {
+                            dialog.dismiss();
+                            showMessage(response.getInfo(), Toast.LENGTH_SHORT);
+                            SharedPreferences preferences = getSharedPreferences("account", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("password", password);
+                            editor.apply();
+                        } else showMessage(response.message());
                     }
 
                     @Override
                     public void onFail(IOException e) {
-                        showMessage(e.getMessage());
+                        showMessage(e.toString());
                     }
                 });
             }
-        } else avatar.setImageBitmap(mUser.getAvatarBitmap());
-    }
-
-    private void changeAvatar() {
-
+        });
     }
 
     private void logout() {
         SharedPreferences preferences = getSharedPreferences("account", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isLogin", false);
-        editor.putString("username", "");
         editor.putString("password", "");
         editor.apply();
 

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jay.bihu.R;
-import com.jay.bihu.bean.QuestionBean;
+import com.jay.bihu.data.Question;
 import com.jay.bihu.holder.QuestionListViewHolder;
 import com.jay.bihu.holder.TailViewHolder;
 
@@ -20,9 +20,9 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
     private static final int TYPE_QUESTION = 0;
     private static final int TYPE_TAIL = 1;
 
-    private ArrayList<QuestionBean> mQuestionList;
+    private ArrayList<Question> mQuestionList;
 
-    public QuestionRvAdapter(ArrayList<QuestionBean> questionList) {
+    public QuestionRvAdapter(ArrayList<Question> questionList) {
         mQuestionList = questionList;
     }
 
@@ -68,12 +68,12 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void refreshQuestionList(ArrayList<QuestionBean> newQuestionList) {
+    public void refreshQuestionList(ArrayList<Question> newQuestionList) {
         mQuestionList = newQuestionList;
         notifyDataSetChanged();
     }
 
-    public void addQuestion(ArrayList<QuestionBean> questionList) {
+    public void addQuestion(ArrayList<Question> questionList) {
         mQuestionList.addAll(questionList);
         notifyDataSetChanged();
     }

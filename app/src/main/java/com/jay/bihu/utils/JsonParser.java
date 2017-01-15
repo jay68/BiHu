@@ -1,7 +1,7 @@
 package com.jay.bihu.utils;
 
-import com.jay.bihu.bean.QuestionBean;
-import com.jay.bihu.bean.UserBean;
+import com.jay.bihu.data.Question;
+import com.jay.bihu.data.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,29 +14,29 @@ import java.util.ArrayList;
  */
 
 public class JsonParser {
-    public static UserBean getUser(String data) {
-        UserBean userBean = new UserBean();
+    public static User getUser(String data) {
+        User user = new User();
         try {
             JSONObject object = new JSONObject(data);
-            userBean.setId(object.getInt("id"));
-            userBean.setAvatar(object.getString("avatar"));
-            userBean.setToken(object.getString("token"));
-            userBean.setUsername(object.getString("username"));
+            user.setId(object.getInt("id"));
+            user.setAvatar(object.getString("avatar"));
+            user.setToken(object.getString("token"));
+            user.setUsername(object.getString("username"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return userBean;
+        return user;
     }
 
-    public static ArrayList<QuestionBean> getQuestionList(String data) {
-        ArrayList<QuestionBean> questionList = new ArrayList<>();
+    public static ArrayList<Question> getQuestionList(String data) {
+        ArrayList<Question> questionList = new ArrayList<>();
 
         try {
             JSONObject object = new JSONObject(data);
             JSONArray array = object.getJSONArray("questions");
             for (int i = 0; i < array.length(); i++) {
-                QuestionBean question = new QuestionBean();
+                Question question = new Question();
                 JSONObject js = array.getJSONObject(i);
                 question.setId(js.getInt("id"));
                 question.setTitle(js.getString("title"));

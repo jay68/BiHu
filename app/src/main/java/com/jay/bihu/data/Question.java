@@ -1,4 +1,4 @@
-package com.jay.bihu.bean;
+package com.jay.bihu.data;
 
 import android.graphics.Bitmap;
 
@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Created by Jay on 2017/1/14.
  */
 
-public class QuestionBean {
+public class Question {
     /**
      * id : 1
      * title : 哦哈哟

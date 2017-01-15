@@ -10,8 +10,6 @@ import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 /**
@@ -45,13 +43,13 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
             public void onResponse(HttpUtils.Response response) {
                 loading = false;
                 if (response.isSuccess()) {
-                    String questions = JsonParser.getElement(response.string(), "questions");
+                    String questions = JsonParser.getElement(response.bodyString(), "questions");
                     if (questions == null || questions.equals("null")) {
                         loadedAll();
                         return;
                     }
-                    adapter.addQuestion(JsonParser.getQuestionList(response.string()));
-                }
+                    adapter.addQuestion(JsonParser.getQuestionList(response.bodyString()));
+                } else loadFailed();
             }
 
             @Override

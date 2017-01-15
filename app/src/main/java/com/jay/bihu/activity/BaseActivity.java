@@ -1,6 +1,7 @@
 package com.jay.bihu.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,11 +25,18 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollector.removeActivity(this.getLocalClassName().replace("activity.", ""));
     }
 
-    protected void showMessage(String message, int length) {
+    public void showMessage(String message, int length) {
         Toast.makeText(this, message, length).show();
     }
 
-    protected void showMessage(String message) {
+    public void showMessage(String message) {
         showMessage(message, Toast.LENGTH_LONG);
+    }
+
+    public void activityStart(Class<?> cls, Bundle data) {
+        Intent intent = new Intent(this, cls);
+        if (data != null)
+            intent.putExtra("data", data);
+        startActivity(intent);
     }
 }

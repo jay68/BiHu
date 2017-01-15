@@ -1,4 +1,4 @@
-package com.jay.bihu.bean;
+package com.jay.bihu.data;
 
 import android.graphics.Bitmap;
 
@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Created by Jay on 2017/1/13.
  */
 
-public class UserBean {
+public class User {
     /**
      * id : 1
      * username : admin

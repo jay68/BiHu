@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jay.bihu.R;
-import com.jay.bihu.bean.QuestionBean;
+import com.jay.bihu.data.Question;
 import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.DateUtils;
 import com.jay.bihu.utils.HttpUtils;
@@ -54,7 +54,7 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         mFavoriteButton = (ImageButton) itemView.findViewById(R.id.favoriteButton);
     }
 
-    public void updateAllTextView(QuestionBean question) {
+    public void updateAllTextView(Question question) {
         mAuthorName.setText(question.getAuthorName());
         mDate.setText(DateUtils.getDateDescription(question.getDate()));
         mQuestionTitle.setText(question.getTitle());
@@ -64,23 +64,8 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         mAnswerCount.setText("(" + question.getAnswerCount() + ")");
     }
 
-    public void updateAllImageView(final QuestionBean question) {
-        if (question.getAuthorAvatarBitmap() != null)
-            mAvatar.setImageBitmap(question.getAuthorAvatarBitmap());
-        else if (!question.getAuthorAvatar().equals("null")) {
-            HttpUtils.sendHttpRequest(question.getAuthorAvatar(), "", new HttpUtils.Callback() {
-                @Override
-                public void onResponse(HttpUtils.Response response) {
-                    Bitmap bitmap = BitmapUtils.getBitmap(response.bytes());
-                    mAvatar.setImageBitmap(bitmap);
-                    question.setAuthorAvatarBitmap(bitmap);
-                }
-
-                @Override
-                public void onFail(IOException e) {
-                }
-            });
-        }
+    public void updateAllImageView(final Question question) {
+        //获取图片
     }
 
     public void addOnClickListener() {
