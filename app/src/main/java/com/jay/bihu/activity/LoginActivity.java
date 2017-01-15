@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,10 +12,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.jay.bihu.R;
-import com.jay.bihu.bean.UserBean;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
-import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.utils.NetWorkUtils;
 import com.jay.bihu.view.LoginDialog;
 
@@ -38,19 +35,12 @@ public class LoginActivity extends BaseActivity {
         mPreferences = getSharedPreferences("account", Context.MODE_PRIVATE);
         mEditor = mPreferences.edit();
 
-        String username = mPreferences.getString("username", "");
-        String password = mPreferences.getString("password", "");
-        boolean isLogin = mPreferences.getBoolean("isLogin", false);
-        if (!isLogin || !NetWorkUtils.isNetworkConnected(this)) {
-            mDialog = new LoginDialog(this);
-            mDialog.show();
-            initDialog();
-            mUsernameWrapper.getEditText().setText(username);
-            mPasswordWrapper.getEditText().setText(password);
-        } else login(username, password);
+        mDialog = new LoginDialog(this);
+        initDialog();
     }
 
     private void initDialog() {
+        mDialog.show();
         //注册
         Button register = (Button) mDialog.findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +64,14 @@ public class LoginActivity extends BaseActivity {
 
         mUsernameWrapper = (TextInputLayout) mDialog.findViewById(R.id.usernameWrapper);
         mPasswordWrapper = (TextInputLayout) mDialog.findViewById(R.id.passwordWrapper);
+
+        String username = mPreferences.getString("username", "");
+        String password = mPreferences.getString("password", "");
+        mUsernameWrapper.getEditText().setText(username);
+        mPasswordWrapper.getEditText().setText(password);
+        boolean isLogin = mPreferences.getBoolean("isLogin", false);
+        if (isLogin && NetWorkUtils.isNetworkConnected(this))
+            login(username, password);
     }
 
     private void register(String username, String password) {
@@ -90,7 +88,7 @@ public class LoginActivity extends BaseActivity {
             mPasswordWrapper.setError("密码过短");
             return;
         }
-        sendHttpRequest(ApiConfig.REGISTER, username, password);
+        loginOrRegister(ApiConfig.REGISTER, username, password);
     }
 
     private void login(String username, String password) {
@@ -98,10 +96,10 @@ public class LoginActivity extends BaseActivity {
             showMessage("无网络连接");
             return;
         }
-        sendHttpRequest(ApiConfig.LOGIN, username, password);
+        loginOrRegister(ApiConfig.LOGIN, username, password);
     }
 
-    private void sendHttpRequest(String address, String username, String password) {
+    private void loginOrRegister(String address, String username, String password) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("登录中...");
         progressDialog.show();
