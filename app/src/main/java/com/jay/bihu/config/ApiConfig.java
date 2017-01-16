@@ -21,5 +21,6 @@ public class ApiConfig {
     public static final String GET_IMAGE = "https://api.caoyue.com.cn/bihu/getImage.php";
     public static final String FAVORITE_LIST = "https://api.caoyue.com.cn/bihu/getFavoriteList.php";    //收藏
     public static final String CANCEL_FAVORITE = "https://api.caoyue.com.cn/bihu/cancelFavorite.php";
+    public static final String FAVORITE = "https://api.caoyue.com.cn/bihu/favorite.php";
     public static final String CHANGE_PASSWORD = "https://api.caoyue.com.cn/bihu/changePassword.php";
 }

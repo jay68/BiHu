@@ -45,8 +45,8 @@ public class JsonParser {
                 question.setRecent(js.getString("recent"));
                 question.setAnswerCount(js.getInt("answerCount"));
                 question.setAuthorId(js.getInt("authorId"));
-                question.setExciting(js.getInt("exciting"));
-                question.setNaive(js.getInt("naive"));
+                question.setExcitingCount(js.getInt("exciting"));
+                question.setNaiveCount(js.getInt("naive"));
                 question.setAuthorName(js.getString("authorName"));
                 question.setAuthorAvatar(js.getString("authorAvatar"));
                 questionList.add(question);

@@ -1,10 +1,9 @@
 package com.jay.bihu.activity;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.jay.bihu.utils.ActivityCollector;

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.jay.bihu.R;
 import com.jay.bihu.data.Question;
+import com.jay.bihu.data.User;
 import com.jay.bihu.holder.QuestionListViewHolder;
 import com.jay.bihu.holder.TailViewHolder;
 
@@ -21,8 +22,10 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
     private static final int TYPE_TAIL = 1;
 
     private ArrayList<Question> mQuestionList;
+    private User mUser;
 
-    public QuestionRvAdapter(ArrayList<Question> questionList) {
+    public QuestionRvAdapter(User user, ArrayList<Question> questionList) {
+        mUser = user;
         mQuestionList = questionList;
     }
 
@@ -38,7 +41,7 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case TYPE_QUESTION:
-                QuestionListViewHolder holder = new QuestionListViewHolder(inflater.inflate(R.layout.item_question, parent, false));
+                QuestionListViewHolder holder = new QuestionListViewHolder(inflater.inflate(R.layout.item_question, parent, false), mUser, mQuestionList);
                 holder.addOnClickListener();
                 return holder;
             case TYPE_TAIL:
@@ -60,7 +63,7 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
             case TYPE_QUESTION:
                 QuestionListViewHolder questionListViewHolder = (QuestionListViewHolder) holder;
                 questionListViewHolder.updateAllTextView(mQuestionList.get(position));
-                questionListViewHolder.updateAllImageView(mQuestionList.get(position));
+                questionListViewHolder.updateAllImage(mQuestionList.get(position));
                 break;
             case TYPE_TAIL:
                 ((TailViewHolder) holder).loading(this, mQuestionList.size() / 20);
@@ -69,7 +72,8 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
     }
 
     public void refreshQuestionList(ArrayList<Question> newQuestionList) {
-        mQuestionList = newQuestionList;
+        mQuestionList.clear();
+        mQuestionList.addAll(newQuestionList);
         notifyDataSetChanged();
     }
 

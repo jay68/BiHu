@@ -25,7 +25,21 @@ public class HttpUtils {
         void onFail(IOException e);
     }
 
-    public static void sendHttpRequest(final String address, final String content, final Callback callback) {
+    public static void sendHttpRequest(String address, String param) {
+        sendHttpRequest(address, param, new Callback() {
+            @Override
+            public void onResponse(Response response) {
+
+            }
+
+            @Override
+            public void onFail(IOException e) {
+
+            }
+        });
+    }
+
+    public static void sendHttpRequest(final String address, final String param, final Callback callback) {
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             @Override
@@ -34,7 +48,7 @@ public class HttpUtils {
                 try {
                     URL url = new URL(address);
                     connection = (HttpURLConnection) url.openConnection();
-                    if (content == null)
+                    if (param == null)
                         connection.setRequestMethod("GET");
                     else
                         connection.setRequestMethod("POST");
@@ -43,9 +57,9 @@ public class HttpUtils {
                     connection.setDoOutput(true);
 
                     //post
-                    if (content != null) {
+                    if (param != null) {
                         OutputStream os = connection.getOutputStream();
-                        os.write(content.getBytes());
+                        os.write(param.getBytes());
                         os.flush();
                         os.close();
                     }

@@ -15,8 +15,8 @@ public class Question {
      * recent : 2016-12-15 12:17:10
      * answerCount : 0
      * authorId : 1
-     * exciting : 2
-     * naive : 0
+     * excitingCount : 2
+     * naiveCount : 0
      * authorName : admin
      * authorAvatar : https://avatars1.githubusercontent.com/u/14852537?v=3&s=460
      */
@@ -28,12 +28,41 @@ public class Question {
     private String recent;
     private int answerCount;
     private int authorId;
-    private int exciting;
-    private int naive;
+    private int excitingCount;
+    private int naiveCount;
     private String authorName;
     private String authorAvatar;
     private Bitmap authorAvatarBitmap;
     private Bitmap questionBitmap;
+
+    private boolean isNaive;
+    private boolean isExciting;
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public boolean isNaive() {
+        return isNaive;
+    }
+
+    public void setNaive(boolean naive) {
+        isNaive = naive;
+    }
+
+    public boolean isExciting() {
+        return isExciting;
+    }
+
+    public void setExciting(boolean exciting) {
+        isExciting = exciting;
+    }
+
+    private boolean isFavorite;
 
     public int getId() {
         return id;
@@ -91,20 +120,20 @@ public class Question {
         this.authorId = authorId;
     }
 
-    public int getExciting() {
-        return exciting;
+    public int getExcitingCount() {
+        return excitingCount;
     }
 
-    public void setExciting(int exciting) {
-        this.exciting = exciting;
+    public void setExcitingCount(int excitingCount) {
+        this.excitingCount = excitingCount;
     }
 
-    public int getNaive() {
-        return naive;
+    public int getNaiveCount() {
+        return naiveCount;
     }
 
-    public void setNaive(int naive) {
-        this.naive = naive;
+    public void setNaiveCount(int naiveCount) {
+        this.naiveCount = naiveCount;
     }
 
     public String getAuthorName() {

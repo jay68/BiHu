@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    mQuestionRvAdapter = new QuestionRvAdapter(JsonParser.getQuestionList(response.bodyString()));
+                    mQuestionRvAdapter = new QuestionRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
                     mQuestionRv.setAdapter(mQuestionRvAdapter);
                 } else showMessage(response.message());
             }
@@ -116,6 +116,9 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.question:
+                        Bundle data = new Bundle();
+                        data.putString("token", mUser.getToken());
+                        activityStart(AskQuestionActivity.class, data);
                         break;
                     case R.id.favorite:
                         break;

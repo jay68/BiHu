@@ -26,4 +26,9 @@
     <string name="logout">退出登录</string>
     <string name="my_favorite">我的收藏</string>
     <string name="load_more">加载更多</string>
+    <string name="ask_question">提问</string>
+    <string name="commit">提交</string>
+    <string name="question_title">标题</string>
+    <string name="question_description">问题描述...</string>
+    <string name="add_img">添加照片</string>
 </resources>
