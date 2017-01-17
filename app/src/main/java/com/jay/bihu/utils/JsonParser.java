@@ -57,13 +57,19 @@ public class JsonParser {
         return questionList;
     }
 
+    public static ArrayList<Question> getFavoriteList(String data) {
+        ArrayList<Question> questionList = getQuestionList(data);
+        for (Question question: questionList)
+            question.setFavorite(true);
+        return questionList;
+    }
+
     public static String getElement(String data, String name) {
         try {
             return new JSONObject(data).getString(name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

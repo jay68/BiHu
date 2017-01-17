@@ -15,7 +15,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,13 +22,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
         </activity>
-
-        <activity android:name=".activity.AskQuestionActivity"
+        <activity
+            android:name=".activity.QuestionActivity"
             android:label="@string/ask_question">
+        </activity>
+        <activity
+            android:name=".activity.FavoriteActivity"
+            android:label="@string/my_favorite">
+        </activity>
+        <activity android:name=".activity.AnswerActivity">
         </activity>
     </application>
 

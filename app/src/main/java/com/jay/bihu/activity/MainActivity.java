@@ -3,15 +3,9 @@ package com.jay.bihu.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,10 +26,6 @@ import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
@@ -121,9 +111,12 @@ public class MainActivity extends BaseActivity {
                     case R.id.question:
                         Bundle data = new Bundle();
                         data.putString("token", mUser.getToken());
-                        activityStart(AskQuestionActivity.class, data);
+                        activityStart(QuestionActivity.class, data);
                         break;
                     case R.id.favorite:
+                        Bundle bundle = new Bundle();
+                        bundle.putString("token", mUser.getToken());
+                        activityStart(FavoriteActivity.class, bundle);
                         break;
                     case R.id.avatar:
                         upLoadAvatar();

@@ -11,7 +11,7 @@ import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
 
-public class AskQuestionActivity extends BaseActivity {
+public class QuestionActivity extends BaseActivity {
     private String mToken;
     private boolean isCommitting;
 

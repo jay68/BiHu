@@ -53,22 +53,18 @@ public class HttpUtils {
                 try {
                     URL url = new URL(address);
                     connection = (HttpURLConnection) url.openConnection();
-                    if (param == null)
-                        connection.setRequestMethod("GET");
-                    else
-                        connection.setRequestMethod("POST");
                     connection.setReadTimeout(5 * 1000);
                     connection.setConnectTimeout(10 * 1000);
                     connection.setDoOutput(true);
-
-                    //post
-                    if (param != null) {
+                    if (param == null)
+                        connection.setRequestMethod("GET");
+                    else {
+                        connection.setRequestMethod("POST");
                         OutputStream os = connection.getOutputStream();
                         os.write(param.getBytes());
                         os.flush();
                         os.close();
                     }
-
                     if (connection.getResponseCode() == 200) {
                         InputStream is = connection.getInputStream();
                         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -83,8 +79,8 @@ public class HttpUtils {
                                 callback.onResponse(new Response(response.toString()));
                             }
                         });
-                    }
-                } catch (final IOException e) {
+                    } else throw new Exception("奇怪的错误");
+                } catch (final Exception e) {
                     e.printStackTrace();
                     handler.post(new Runnable() {
                         @Override
@@ -106,7 +102,7 @@ public class HttpUtils {
         private String mInfo;
         private String mData;
 
-        public Response(String response) {
+        Response(String response) {
             mRawData = response;
             try {
                 JSONObject object = new JSONObject(response);
