@@ -1,6 +1,7 @@
 package com.jay.bihu.utils;
 
 import android.os.Handler;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +23,7 @@ public class HttpUtils {
     public interface Callback {
         void onResponse(Response response);
 
-        void onFail(IOException e);
+        void onFail(Exception e);
     }
 
     public static void sendHttpRequest(String address, String param) {
@@ -33,13 +34,17 @@ public class HttpUtils {
             }
 
             @Override
-            public void onFail(IOException e) {
+            public void onFail(Exception e) {
 
             }
         });
     }
 
     public static void sendHttpRequest(final String address, final String param, final Callback callback) {
+        if (!NetWorkUtils.isNetworkConnected(MyApplication.getContext())) {
+            callback.onFail(new Exception("无网络连接"));
+            return;
+        }
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             @Override

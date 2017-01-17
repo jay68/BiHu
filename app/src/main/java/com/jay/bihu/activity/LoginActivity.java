@@ -63,16 +63,11 @@ public class LoginActivity extends BaseActivity {
         mDialog.getUsernameWrapper().getEditText().setText(username);
         mDialog.getPasswordWrapper().getEditText().setText(password);
         boolean isLogin = mPreferences.getBoolean("isLogin", false);
-        if (isLogin && NetWorkUtils.isNetworkConnected(this))
+        if (isLogin/* && NetWorkUtils.isNetworkConnected(this)*/)
             login(username, password);
     }
 
     private void register(String username, String password) {
-        if (!NetWorkUtils.isNetworkConnected(this)) {
-            showMessage("无网络连接");
-            return;
-        }
-
         if (username.length() < 1) {
             mDialog.getUsernameWrapper().setError("用户名过短");
             return;
@@ -85,10 +80,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login(String username, String password) {
-        if (!NetWorkUtils.isNetworkConnected(this)) {
-            showMessage("无网络连接");
-            return;
-        }
         loginOrRegister(ApiConfig.LOGIN, username, password);
     }
 
@@ -105,7 +96,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(IOException e) {
+            public void onFail(Exception e) {
                 e.printStackTrace();
                 showMessage(e.toString());
                 progressDialog.dismiss();

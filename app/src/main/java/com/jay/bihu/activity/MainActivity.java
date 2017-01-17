@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFail(IOException e) {
+                    public void onFail(Exception e) {
                         showMessage(e.toString());
                         mRefreshLayout.setRefreshing(false);
                     }
@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(IOException e) {
+            public void onFail(Exception e) {
                 showMessage(e.toString());
             }
         });
@@ -115,6 +115,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.home:
+                        mQuestionRv.scrollToPosition(0);
+                        break;
                     case R.id.question:
                         Bundle data = new Bundle();
                         data.putString("token", mUser.getToken());
@@ -185,7 +188,7 @@ public class MainActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFail(IOException e) {
+                    public void onFail(Exception e) {
                         showMessage(e.toString());
                     }
                 });

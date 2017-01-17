@@ -1,7 +1,6 @@
 package com.jay.bihu.activity;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,13 +10,10 @@ import android.widget.EditText;
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
-import com.jay.bihu.utils.NetWorkUtils;
-
-import java.io.IOException;
 
 public class AskQuestionActivity extends BaseActivity {
     private String mToken;
-    private boolean isCommiting;
+    private boolean isCommitting;
 
     private EditText mQuestionTitle;
     private EditText mQuestionDetail;
@@ -52,7 +48,7 @@ public class AskQuestionActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (isCommiting)
+        if (isCommitting)
             return true;
 
         switch (item.getItemId()) {
@@ -69,10 +65,6 @@ public class AskQuestionActivity extends BaseActivity {
     }
 
     private void commit() {
-        if (!NetWorkUtils.isNetworkConnected(this)) {
-            showMessage("无网络连接");
-            return;
-        }
         String title = mQuestionTitle.getText().toString();
         String content = mQuestionDetail.getText().toString();
         if (title.equals("")) {
@@ -83,11 +75,11 @@ public class AskQuestionActivity extends BaseActivity {
             return;
         }
         String param = "title=" + title + "&content=" + content + "&token=" + mToken;
-        isCommiting = true;
+        isCommitting = true;
         HttpUtils.sendHttpRequest(ApiConfig.POST_QUESTION, param, new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
-                isCommiting = false;
+                isCommitting = false;
                 if (response.isSuccess()) {
                     showMessage(response.getInfo());
                     finish();
@@ -95,8 +87,8 @@ public class AskQuestionActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(IOException e) {
-                isCommiting = false;
+            public void onFail(Exception e) {
+                isCommitting = false;
                 showMessage(e.toString());
             }
         });

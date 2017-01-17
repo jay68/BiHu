@@ -53,7 +53,7 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
             }
 
             @Override
-            public void onFail(IOException e) {
+            public void onFail(Exception e) {
                 loading = false;
                 loadFailed();
             }
