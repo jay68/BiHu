@@ -1,21 +1,20 @@
 package com.jay.bihu.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jay.bihu.R;
+import com.jay.bihu.activity.AnswerActivity;
 import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
 import com.jay.bihu.holder.QuestionListViewHolder;
 import com.jay.bihu.holder.TailViewHolder;
+import com.jay.bihu.utils.MyApplication;
 
 import java.util.ArrayList;
-
-/**
- * Created by Jay on 2017/1/14.
- */
 
 public class QuestionRvAdapter extends RecyclerView.Adapter {
     private static final int TYPE_QUESTION = 0;

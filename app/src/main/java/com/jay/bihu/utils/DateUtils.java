@@ -5,14 +5,10 @@ import java.util.GregorianCalendar;
 
 /**
  * Created by Jay on 2017/1/14.
+ * 将格式化的时间(xxxx-xx-xx xx:xx:xx)转换为对时间的描述(今天、明天、后天……)
  */
 
 public class DateUtils {
-    /**
-     * 获取日期描述
-     * @param formatDate
-     * @return
-     */
     public static String getDateDescription(String formatDate) {
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         String[] date = formatDate.split("-");

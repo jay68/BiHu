@@ -12,10 +12,6 @@ import com.jay.bihu.utils.JsonParser;
 
 import java.io.IOException;
 
-/**
- * Created by Jay on 2017/1/14.
- */
-
 public class TailViewHolder extends RecyclerView.ViewHolder {
     private TextView mLoad;
     private boolean loading;

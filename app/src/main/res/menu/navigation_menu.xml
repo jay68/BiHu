@@ -17,7 +17,7 @@
             android:title="账户管理">
             <menu>
                 <item
-                    android:id="@+id/avatar"
+                    android:id="@+id/avatarUrl"
                     android:icon="@drawable/ic_face_gray_24dp"
                     android:title="@string/change_avatar"/>
                 <item

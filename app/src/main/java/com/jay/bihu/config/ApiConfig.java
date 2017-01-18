@@ -2,6 +2,7 @@ package com.jay.bihu.config;
 
 /**
  * Created by Jay on 2017/1/12.
+ * 逼乎的常量表
  */
 
 public class ApiConfig {

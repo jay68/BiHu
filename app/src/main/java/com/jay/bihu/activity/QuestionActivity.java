@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
@@ -154,6 +155,8 @@ public class QuestionActivity extends BaseActivity {
     }
 
     private void commit() {
+        if (isCommitting)
+            return;
         String title = mQuestionTitle.getText().toString();
         String content = mQuestionDetail.getText().toString();
         if (title.equals("")) {
@@ -170,7 +173,7 @@ public class QuestionActivity extends BaseActivity {
             public void onResponse(HttpUtils.Response response) {
                 isCommitting = false;
                 if (response.isSuccess()) {
-                    showMessage(response.getInfo());
+                    showMessage("已提交", Toast.LENGTH_SHORT);
                     finish();
                 } else showMessage(response.message());
             }

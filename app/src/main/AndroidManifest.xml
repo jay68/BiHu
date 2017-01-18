@@ -34,7 +34,8 @@
         </activity>
         <activity android:name=".activity.AnswerListActivity">
         </activity>
-        <activity android:name=".activity.AnswerActivity">
+        <activity android:name=".activity.AnswerActivity"
+            android:label="@string/answer">
         </activity>
     </application>
 

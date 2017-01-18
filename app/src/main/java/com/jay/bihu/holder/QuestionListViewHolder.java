@@ -1,5 +1,7 @@
 package com.jay.bihu.holder;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -7,18 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jay.bihu.R;
+import com.jay.bihu.activity.AnswerActivity;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.DateUtils;
 import com.jay.bihu.utils.HttpUtils;
+import com.jay.bihu.utils.MyApplication;
 import com.jay.bihu.view.CircleImageView;
 
 import java.util.ArrayList;
-
-/**
- * Created by Jay on 2017/1/14.
- */
 
 public class QuestionListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private CircleImageView mAvatar;
@@ -87,8 +87,16 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
     public void addOnClickListener() {
         mExcitingButton.setOnClickListener(this);
         mNaiveButton.setOnClickListener(this);
-        mAnswerButton.setOnClickListener(this);
         mFavoriteButton.setOnClickListener(this);
+        mAnswerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AnswerActivity.class);
+                intent.putExtra("qid", mQuestionList.get(getLayoutPosition()).getId());
+                intent.putExtra("token", mUser.getToken());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -97,7 +105,6 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         String param = "id=" + question.getId() + "&type=1&token=" + mUser.getToken();
         switch (v.getId()) {
             case R.id.naiveButton:
-
                 if (question.isNaive()) {
                     HttpUtils.sendHttpRequest(ApiConfig.CANCEL_NAIVE, param);
                     mNaiveButton.setBackgroundResource(R.drawable.ic_thumb_down_gray_24dp);
@@ -124,8 +131,6 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
                     question.setExciting(true);
                 }
                 mExcitingCount.setText("(" + question.getExcitingCount() + ")");
-                break;
-            case R.id.answerButton:
                 break;
             case R.id.favoriteButton:
                 param = "qid=" + question.getId() + "&token=" + mUser.getToken();

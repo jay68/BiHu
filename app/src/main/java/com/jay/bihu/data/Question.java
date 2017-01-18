@@ -1,9 +1,10 @@
 package com.jay.bihu.data;
 
-import android.graphics.Bitmap;
+import java.util.ArrayList;
 
 /**
  * Created by Jay on 2017/1/14.
+ * 保存问题信息的类
  */
 
 public class Question {
@@ -21,6 +22,7 @@ public class Question {
      * authorAvatar : https://avatars1.githubusercontent.com/u/14852537?v=3&s=460
      */
 
+    //原键
     private int id;
     private String title;
     private String content;
@@ -32,14 +34,22 @@ public class Question {
     private int naiveCount;
     private String authorName;
     private String authorAvatar;
-    private Bitmap authorAvatarBitmap;
-    private Bitmap questionBitmap;
+    private ArrayList<String> imageUrls = new ArrayList<>();
 
+    //自定义键
     private boolean isNaive;
     private boolean isExciting;
 
     public boolean isFavorite() {
         return isFavorite;
+    }
+
+    public String getImageUrl(int index) {
+        return imageUrls.get(index);
+    }
+
+    public void addImageUrl(String url) {
+        imageUrls.add(url);
     }
 
     public void setFavorite(boolean favorite) {
@@ -150,21 +160,5 @@ public class Question {
 
     public void setAuthorAvatar(String authorAvatar) {
         this.authorAvatar = authorAvatar;
-    }
-
-    public Bitmap getAuthorAvatarBitmap() {
-        return authorAvatarBitmap;
-    }
-
-    public void setAuthorAvatarBitmap(Bitmap authorAvatarBitmap) {
-        this.authorAvatarBitmap = authorAvatarBitmap;
-    }
-
-    public Bitmap getQuestionBitmap() {
-        return questionBitmap;
-    }
-
-    public void setQuestionBitmap(Bitmap questionBitmap) {
-        this.questionBitmap = questionBitmap;
     }
 }

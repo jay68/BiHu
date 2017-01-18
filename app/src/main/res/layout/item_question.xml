@@ -13,7 +13,7 @@
         android:padding="10dp">
 
         <com.jay.bihu.view.CircleImageView
-            android:id="@+id/avatar"
+            android:id="@+id/avatarUrl"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/avatar"
-            android:layout_toRightOf="@+id/avatar"
+            android:layout_toEndOf="@+id/avatarUrl"
+            android:layout_toRightOf="@+id/avatarUrl"
             android:text="作者名字"
             android:textColor="#000"
             android:textSize="18sp"/>
@@ -41,8 +41,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/avatar"
-            android:layout_toRightOf="@+id/avatar"
+            android:layout_toEndOf="@+id/avatarUrl"
+            android:layout_toRightOf="@+id/avatarUrl"
             android:text="今天13:19"
             android:textSize="12sp"/>
 
@@ -50,7 +50,7 @@
             android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/avatar"
+            android:layout_below="@+id/avatarUrl"
             android:layout_marginTop="15dp"
             android:padding="5dp">
 

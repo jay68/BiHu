@@ -31,4 +31,6 @@
     <string name="question_title">标题</string>
     <string name="question_description">问题描述...</string>
     <string name="add_img">添加照片</string>
+    <string name="talk">说点什么吧……</string>
+    <string name="answer">回答</string>
 </resources>

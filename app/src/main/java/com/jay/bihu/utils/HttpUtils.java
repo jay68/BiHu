@@ -17,6 +17,7 @@ import java.net.URL;
 
 /**
  * Created by Jay on 2017/1/12.
+ * 网络请求工具类
  */
 
 public class HttpUtils {

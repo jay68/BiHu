@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 
 /**
  * Created by Jay on 2017/1/14.
+ * 各种图片类互转工具类
  */
 
 public class BitmapUtils {

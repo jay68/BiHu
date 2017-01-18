@@ -4,21 +4,21 @@ import android.graphics.Bitmap;
 
 /**
  * Created by Jay on 2017/1/13.
+ * 保存登录用户信息的类
  */
 
 public class User {
     /**
      * id : 1
      * username : admin
-     * avatar : null
+     * avatarUrl : null
      * token : 6c5f989bdc56fe25f8a2b08443f354c910280c50
      */
 
     private int id;
     private String username;
-    private String avatar;
+    private String avatarUrl;
     private String token;
-    private Bitmap avatarBitmap;
 
     public int getId() {
         return id;
@@ -36,12 +36,12 @@ public class User {
         this.username = username;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getToken() {
@@ -52,11 +52,4 @@ public class User {
         this.token = token;
     }
 
-    public Bitmap getAvatarBitmap() {
-        return avatarBitmap;
-    }
-
-    public void setAvatarBitmap(Bitmap avatarBitmap) {
-        this.avatarBitmap = avatarBitmap;
-    }
 }
