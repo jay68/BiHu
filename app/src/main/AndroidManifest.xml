@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.QuestionListActivity">
         </activity>
         <activity
             android:name=".activity.QuestionActivity"
@@ -31,6 +31,8 @@
         <activity
             android:name=".activity.FavoriteActivity"
             android:label="@string/my_favorite">
+        </activity>
+        <activity android:name=".activity.AnswerListActivity">
         </activity>
         <activity android:name=".activity.AnswerActivity">
         </activity>

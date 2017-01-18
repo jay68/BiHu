@@ -27,7 +27,7 @@ import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
 
-public class MainActivity extends BaseActivity {
+public class QuestionListActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private RecyclerView mQuestionRv;
@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_question_list);
 
         mUser = JsonParser.getUser(getIntent().getBundleExtra("data").getString("data"));
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);

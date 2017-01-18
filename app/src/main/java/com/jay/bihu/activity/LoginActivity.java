@@ -2,7 +2,6 @@ package com.jay.bihu.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -12,10 +11,7 @@ import android.widget.Toast;
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
-import com.jay.bihu.utils.NetWorkUtils;
 import com.jay.bihu.view.LoginDialog;
-
-import java.io.IOException;
 
 public class LoginActivity extends BaseActivity {
     private LoginDialog mDialog;
@@ -116,7 +112,7 @@ public class LoginActivity extends BaseActivity {
                 mEditor.apply();
                 Bundle data = new Bundle();
                 data.putString("data", response.bodyString());
-                activityStart(MainActivity.class, data);
+                activityStart(QuestionListActivity.class, data);
                 finish();
                 break;
             case 400:

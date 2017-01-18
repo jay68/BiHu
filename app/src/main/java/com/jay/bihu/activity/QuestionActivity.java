@@ -6,8 +6,6 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
@@ -36,7 +34,7 @@ public class QuestionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ask_question);
+        setContentView(R.layout.activity_question);
 
         mToken = getIntent().getBundleExtra("data").getString("token");
         mQuestionDetail = (EditText) findViewById(R.id.questionDetail);
