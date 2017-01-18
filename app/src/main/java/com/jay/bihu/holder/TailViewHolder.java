@@ -30,15 +30,17 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
         return mLoad;
     }
 
-    public void loading(final QuestionRvAdapter adapter, int page) {
+    public void loading(String address, final QuestionRvAdapter adapter, int page) {
         if ((adapter.getItemCount() - 1) % 20 != 0) {
             loadedAll();
             return;
         }
 
+        if (loading)
+            return;
         mLoad.setText("加载中...");
         loading = true;
-        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=" + page + "&count=20", new HttpUtils.Callback() {
+        HttpUtils.sendHttpRequest(address, "page=" + page + "&count=20", new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 loading = false;

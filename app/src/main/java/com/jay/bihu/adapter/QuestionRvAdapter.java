@@ -22,11 +22,13 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
     private static final int TYPE_TAIL = 1;
 
     private ArrayList<Question> mQuestionList;
+    private String mLoadAddress;
     private User mUser;
 
-    public QuestionRvAdapter(User user, ArrayList<Question> questionList) {
+    public QuestionRvAdapter(User user, ArrayList<Question> questionList, String loadAddress) {
         mUser = user;
         mQuestionList = questionList;
+        mLoadAddress = loadAddress;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
                 tailViewHolder.getLoad().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        tailViewHolder.loading(QuestionRvAdapter.this, mQuestionList.size() / 20);
+                        tailViewHolder.loading(mLoadAddress, QuestionRvAdapter.this, mQuestionList.size() / 20);
                     }
                 });
                 return tailViewHolder;
@@ -66,7 +68,7 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
                 questionListViewHolder.updateAllImage(mQuestionList.get(position));
                 break;
             case TYPE_TAIL:
-                ((TailViewHolder) holder).loading(this, mQuestionList.size() / 20);
+                ((TailViewHolder) holder).loading(mLoadAddress, this, mQuestionList.size() / 20);
                 break;
         }
     }

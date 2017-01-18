@@ -45,10 +45,13 @@ public class JsonParser {
                 question.setRecent(js.getString("recent"));
                 question.setAnswerCount(js.getInt("answerCount"));
                 question.setAuthorId(js.getInt("authorId"));
-                question.setExcitingCount(js.getInt("exciting"));
-                question.setNaiveCount(js.getInt("naive"));
                 question.setAuthorName(js.getString("authorName"));
                 question.setAuthorAvatar(js.getString("authorAvatar"));
+                if (js.has("exciting"))
+                    question.setExcitingCount(js.getInt("exciting"));
+                if (js.has("naive"))
+                    question.setNaiveCount(js.getInt("naive"));
+
                 questionList.add(question);
             }
         } catch (JSONException e) {
@@ -58,8 +61,8 @@ public class JsonParser {
     }
 
     public static ArrayList<Question> getFavoriteList(String data) {
-        ArrayList<Question> questionList = getQuestionList(data);
-        for (Question question: questionList)
+        ArrayList<Question> questionList = getQuestionList(data.replace("\"answers\":", "\"questions\":"));
+        for (Question question : questionList)
             question.setFavorite(true);
         return questionList;
     }

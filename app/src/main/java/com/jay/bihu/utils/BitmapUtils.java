@@ -11,4 +11,8 @@ public class BitmapUtils {
     public static Bitmap getBitmap(byte[] src) {
         return BitmapFactory.decodeByteArray(src, 0, src.length);
     }
+
+    public static Bitmap pikeBitmapFromStorage() {
+        return null;
+    }
 }

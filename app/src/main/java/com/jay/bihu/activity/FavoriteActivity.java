@@ -2,8 +2,11 @@ package com.jay.bihu.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionRvAdapter;
@@ -32,8 +35,19 @@ public class FavoriteActivity extends BaseActivity {
         mQuestionRv = (RecyclerView) findViewById(R.id.questionRv);
         mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
 
+        setUpToolBar();
         setUpQuestionRv();
         setUpRefreshLayout();
+    }
+
+    private void setUpToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        }
     }
 
     private void setUpQuestionRv() {
@@ -47,7 +61,7 @@ public class FavoriteActivity extends BaseActivity {
                 if (response.isSuccess()) {
                     User user = new User();
                     user.setToken(mToken);
-                    mQuestionRvAdapter = new QuestionRvAdapter(user, JsonParser.getFavoriteList(response.bodyString()));
+                    mQuestionRvAdapter = new QuestionRvAdapter(user, JsonParser.getFavoriteList(response.bodyString()), ApiConfig.FAVORITE_LIST);
                     mQuestionRv.setAdapter(mQuestionRvAdapter);
                 } else showMessage(response.message());
             }
@@ -81,5 +95,12 @@ public class FavoriteActivity extends BaseActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+        return true;
     }
 }

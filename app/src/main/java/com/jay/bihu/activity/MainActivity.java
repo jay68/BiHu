@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    mQuestionRvAdapter = new QuestionRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
+                    mQuestionRvAdapter = new QuestionRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()), ApiConfig.QUESTION_LIST);
                     mQuestionRv.setAdapter(mQuestionRvAdapter);
                 } else showMessage(response.message());
             }
