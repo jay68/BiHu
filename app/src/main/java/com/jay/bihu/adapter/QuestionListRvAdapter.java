@@ -26,7 +26,6 @@ public class QuestionListRvAdapter extends RecyclerView.Adapter {
     public QuestionListRvAdapter(User user, ArrayList<Question> questionList) {
         mUser = user;
         mQuestionList = questionList;
-        sort();
     }
 
     @Override
@@ -77,21 +76,11 @@ public class QuestionListRvAdapter extends RecyclerView.Adapter {
 
     public void addQuestion(ArrayList<Question> questionList) {
         mQuestionList.addAll(questionList);
-        sort();
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         return mQuestionList.size() + 1;
-    }
-
-    private void sort() {
-        Collections.sort(mQuestionList, new Comparator<Question>() {
-            @Override
-            public int compare(Question o1, Question o2) {
-                return o2.getRecent().compareTo(o1.getRecent());
-            }
-        });
     }
 }

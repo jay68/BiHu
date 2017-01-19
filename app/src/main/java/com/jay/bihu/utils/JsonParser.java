@@ -46,6 +46,8 @@ public class JsonParser {
                 question.setContent(js.getString("content"));
                 question.setDate(js.getString("date"));
                 question.setRecent(js.getString("recent"));
+                if (question.getRecent().equals("null"))
+                    question.setRecent(question.getDate());
                 question.setAnswerCount(js.getInt("answerCount"));
                 question.setAuthorId(js.getInt("authorId"));
                 question.setAuthorName(js.getString("authorName"));
@@ -54,7 +56,7 @@ public class JsonParser {
                 question.setNaiveCount(js.getInt("naive"));
                 JSONArray images = js.getJSONArray("images");
                 for (int j = 0; j < images.length(); j++)
-                    question.addImageUrl(images.getString(i));
+                    question.addImageUrl(images.getJSONObject(j).getString("url"));
                 questionList.add(question);
             }
         } catch (JSONException e) {
@@ -91,7 +93,7 @@ public class JsonParser {
                 if (js.has("images")) {
                     JSONArray images = js.getJSONArray("images");
                     for (int j = 0; j < images.length(); j++)
-                        answer.addImageUrl(images.getString(i));
+                        answer.addImageUrl(images.getJSONObject(j).getString("url"));
                 }
                 answerList.add(answer);
             }

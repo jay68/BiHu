@@ -86,7 +86,7 @@ public class QuestionViewHolder extends RecyclerView.ViewHolder implements View.
     private void updateAllTextView(Question question) {
         mAuthorName.setText(question.getAuthorName());
         mDate.setText(DateUtils.getDateDescription(question.getDate()));
-        mRecentDate.setText(DateUtils.getDateDescription(question.getDate()) + " 更新");
+        mRecentDate.setText(DateUtils.getDateDescription(question.getRecent()) + " 更新");
         mQuestionTitle.setText(question.getTitle());
         mQuestionDetail.setText(question.getContent());
         mExcitingCount.setText("(" + question.getExcitingCount() + ")");

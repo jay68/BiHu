@@ -26,7 +26,6 @@ public class FavoriteListRvAdapter extends RecyclerView.Adapter {
     public FavoriteListRvAdapter(User user, ArrayList<Question> favoriteList) {
         mUser = user;
         mFavoriteList = favoriteList;
-        sort();
     }
 
     @Override
@@ -77,21 +76,11 @@ public class FavoriteListRvAdapter extends RecyclerView.Adapter {
 
     public void addFavorite(ArrayList<Question> questionList) {
         mFavoriteList.addAll(questionList);
-        sort();
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         return mFavoriteList.size() + 1;
-    }
-
-    private void sort() {
-        Collections.sort(mFavoriteList, new Comparator<Question>() {
-            @Override
-            public int compare(Question o1, Question o2) {
-                return o2.getRecent().compareTo(o1.getRecent());
-            }
-        });
     }
 }
