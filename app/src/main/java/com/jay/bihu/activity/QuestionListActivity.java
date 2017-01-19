@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jay.bihu.R;
-import com.jay.bihu.adapter.QuestionRvAdapter;
+import com.jay.bihu.adapter.QuestionListRvAdapter;
 import com.jay.bihu.data.User;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
@@ -34,7 +34,7 @@ public class QuestionListActivity extends BaseActivity {
     private SwipeRefreshLayout mRefreshLayout;
 
     private User mUser;
-    private QuestionRvAdapter mQuestionRvAdapter;
+    private QuestionListRvAdapter mQuestionListRvAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class QuestionListActivity extends BaseActivity {
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
-                            mQuestionRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.bodyString()));
+                            mQuestionListRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.bodyString()));
                         else showMessage(response.message());
                     }
 
@@ -86,8 +86,8 @@ public class QuestionListActivity extends BaseActivity {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    mQuestionRvAdapter = new QuestionRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()), ApiConfig.QUESTION_LIST);
-                    mQuestionRv.setAdapter(mQuestionRvAdapter);
+                    mQuestionListRvAdapter = new QuestionListRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
+                    mQuestionRv.setAdapter(mQuestionListRvAdapter);
                 } else showMessage(response.message());
             }
 
@@ -116,7 +116,7 @@ public class QuestionListActivity extends BaseActivity {
                     case R.id.favorite:
                         Bundle bundle = new Bundle();
                         bundle.putString("token", mUser.getToken());
-                        activityStart(FavoriteActivity.class, bundle);
+                        activityStart(FavoriteListActivity.class, bundle);
                         break;
                     case R.id.avatar:
                         upLoadAvatar();

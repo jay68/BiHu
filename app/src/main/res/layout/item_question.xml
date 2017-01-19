@@ -13,7 +13,7 @@
         android:padding="10dp">
 
         <com.jay.bihu.view.CircleImageView
-            android:id="@+id/avatarUrl"
+            android:id="@+id/avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
@@ -27,9 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/avatarUrl"
-            android:layout_toRightOf="@+id/avatarUrl"
-            android:text="作者名字"
+            android:layout_toEndOf="@+id/avatar"
+            android:layout_toRightOf="@+id/avatar"
             android:textColor="#000"
             android:textSize="18sp"/>
 
@@ -41,16 +40,15 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/avatarUrl"
-            android:layout_toRightOf="@+id/avatarUrl"
-            android:text="今天13:19"
+            android:layout_toEndOf="@+id/avatar"
+            android:layout_toRightOf="@+id/avatar"
             android:textSize="12sp"/>
 
         <RelativeLayout
             android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/avatarUrl"
+            android:layout_below="@+id/avatar"
             android:layout_marginTop="15dp"
             android:padding="5dp">
 
@@ -60,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="问题0"
                 android:textColor="#000"
                 android:textSize="16sp"/>
 
@@ -74,7 +71,6 @@
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLength="50"
-                android:text="人为什么会死"
                 android:textSize="14sp"/>
         </RelativeLayout>
 
@@ -89,10 +85,18 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_below="@+id/questionImage"
+            android:layout_below="@+id/recentDate"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp"
             android:background="#bfbfbf"/>
+
+        <TextView
+            android:id="@+id/recentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/questionImage"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -115,8 +119,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toEndOf="@+id/excitingButton"
-                android:layout_toRightOf="@+id/excitingButton"
-                android:text="(0)"/>
+                android:layout_toRightOf="@+id/excitingButton"/>
 
             <ImageButton
                 android:id="@+id/naiveButton"
@@ -133,8 +136,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toEndOf="@+id/naiveButton"
-                android:layout_toRightOf="@+id/naiveButton"
-                android:text="(0)"/>
+                android:layout_toRightOf="@+id/naiveButton"/>
 
             <ImageButton
                 android:id="@+id/answerButton"
@@ -151,8 +153,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toEndOf="@+id/answerButton"
-                android:layout_toRightOf="@+id/answerButton"
-                android:text="(0)"/>
+                android:layout_toRightOf="@+id/answerButton"/>
 
             <ImageButton
                 android:id="@+id/favoriteButton"

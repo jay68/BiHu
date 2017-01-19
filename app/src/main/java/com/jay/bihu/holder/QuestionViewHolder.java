@@ -1,7 +1,7 @@
 package com.jay.bihu.holder;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,22 +10,23 @@ import android.widget.TextView;
 
 import com.jay.bihu.R;
 import com.jay.bihu.activity.AnswerActivity;
+import com.jay.bihu.activity.AnswerListActivity;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.DateUtils;
 import com.jay.bihu.utils.HttpUtils;
-import com.jay.bihu.utils.MyApplication;
 import com.jay.bihu.view.CircleImageView;
 
 import java.util.ArrayList;
 
-public class QuestionListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private CircleImageView mAvatar;
     private ImageView mQuestionImage;
 
     private TextView mAuthorName;
     private TextView mDate;
+    private TextView mRecentDate;
     private TextView mQuestionTitle;
     private TextView mQuestionDetail;
     private TextView mExcitingCount;
@@ -40,12 +41,15 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
     private User mUser;
     private ArrayList<Question> mQuestionList;
 
-    public QuestionListViewHolder(View itemView, User user, ArrayList<Question> questionList) {
+    public QuestionViewHolder(View itemView, User user, ArrayList<Question> questionList) {
         super(itemView);
+        setItemViewOnClickListener(itemView);
+
         mAvatar = (CircleImageView) itemView.findViewById(R.id.avatar);
         mQuestionImage = (ImageView) itemView.findViewById(R.id.questionImage);
         mAuthorName = (TextView) itemView.findViewById(R.id.authorName);
         mDate = (TextView) itemView.findViewById(R.id.date);
+        mRecentDate = (TextView) itemView.findViewById(R.id.recentDate);
         mQuestionTitle = (TextView) itemView.findViewById(R.id.questionTitle);
         mQuestionDetail = (TextView) itemView.findViewById(R.id.questionDetail);
         mExcitingCount = (TextView) itemView.findViewById(R.id.excitingCount);
@@ -60,9 +64,29 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         mQuestionList = questionList;
     }
 
-    public void updateAllTextView(Question question) {
+    private void setItemViewOnClickListener(View itemView) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AnswerListActivity.class);
+                Bundle data = new Bundle();
+                data.putParcelable("user", mUser);
+                data.putParcelable("question", mQuestionList.get(getLayoutPosition()));
+                intent.putExtra("data", data);
+                v.getContext().startActivity(intent);
+            }
+        });
+    }
+
+    public void update(Question question) {
+        updateAllImage(question);
+        updateAllTextView(question);
+    }
+
+    private void updateAllTextView(Question question) {
         mAuthorName.setText(question.getAuthorName());
         mDate.setText(DateUtils.getDateDescription(question.getDate()));
+        mRecentDate.setText(DateUtils.getDateDescription(question.getDate()) + " 更新");
         mQuestionTitle.setText(question.getTitle());
         mQuestionDetail.setText(question.getContent());
         mExcitingCount.setText("(" + question.getExcitingCount() + ")");
@@ -70,18 +94,10 @@ public class QuestionListViewHolder extends RecyclerView.ViewHolder implements V
         mAnswerCount.setText("(" + question.getAnswerCount() + ")");
     }
 
-    public void updateAllImage(final Question question) {
-        if (question.isNaive())
-            mNaiveButton.setBackgroundResource(R.drawable.ic_thumb_down_pink_24dp);
-        else mNaiveButton.setBackgroundResource(R.drawable.ic_thumb_down_gray_24dp);
-
-        if (question.isExciting())
-            mExcitingButton.setBackgroundResource(R.drawable.ic_thumb_up_pink_24dp);
-        else mExcitingButton.setBackgroundResource(R.drawable.ic_thumb_up_gray_24dp);
-
-        if (question.isFavorite())
-            mFavoriteButton.setBackgroundResource(R.drawable.ic_favorite_pink_24dp);
-        else mFavoriteButton.setBackgroundResource(R.drawable.ic_favorite_border_gray_24dp);
+    private void updateAllImage(final Question question) {
+        mNaiveButton.setBackgroundResource(question.isNaive() ? R.drawable.ic_thumb_down_pink_24dp : R.drawable.ic_thumb_down_gray_24dp);
+        mExcitingButton.setBackgroundResource(question.isExciting() ? R.drawable.ic_thumb_up_pink_24dp : R.drawable.ic_thumb_up_gray_24dp);
+        mFavoriteButton.setBackgroundResource(question.isFavorite() ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_gray_24dp);
     }
 
     public void addOnClickListener() {

@@ -29,10 +29,11 @@
             android:label="@string/ask_question">
         </activity>
         <activity
-            android:name=".activity.FavoriteActivity"
+            android:name=".activity.FavoriteListActivity"
             android:label="@string/my_favorite">
         </activity>
-        <activity android:name=".activity.AnswerListActivity">
+        <activity android:name=".activity.AnswerListActivity"
+            android:label="@string/detail">
         </activity>
         <activity android:name=".activity.AnswerActivity"
             android:label="@string/answer">

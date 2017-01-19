@@ -21,6 +21,7 @@ public class Answer {
      * images : []
      */
 
+    //原键
     private int id;
     private String content;
     private String date;
@@ -31,6 +32,10 @@ public class Answer {
     private String authorName;
     private String authorAvatar;
     private ArrayList<String> imageUrls;
+
+    //自定义键
+    private boolean isNaive;
+    private boolean isExciting;
 
     public int getId() {
         return id;
@@ -110,5 +115,21 @@ public class Answer {
 
     public void addImageUrl(String url) {
         imageUrls.add(url);
+    }
+
+    public boolean isNaive() {
+        return isNaive;
+    }
+
+    public void setNaive(boolean naive) {
+        isNaive = naive;
+    }
+
+    public boolean isExciting() {
+        return isExciting;
+    }
+
+    public void setExciting(boolean exciting) {
+        isExciting = exciting;
     }
 }

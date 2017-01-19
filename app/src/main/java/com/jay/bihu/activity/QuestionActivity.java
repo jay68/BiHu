@@ -112,7 +112,7 @@ public class QuestionActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.quiz_toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.question_toolbar_menu, menu);
         return true;
     }
 

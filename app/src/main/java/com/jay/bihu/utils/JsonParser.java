@@ -71,11 +71,11 @@ public class JsonParser {
         return questionList;
     }
 
-    public static ArrayList<Answer> getAnswer(String data) {
+    public static ArrayList<Answer> getAnswerList(String data) {
         ArrayList<Answer> answerList = new ArrayList<>();
         try {
             JSONObject object = new JSONObject(data);
-            JSONArray array = object.getJSONArray("questions");
+            JSONArray array = object.getJSONArray("answers");
             for (int i = 0; i < array.length(); i++) {
                 Answer answer = new Answer();
                 JSONObject js = array.getJSONObject(i);

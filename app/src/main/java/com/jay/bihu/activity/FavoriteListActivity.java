@@ -9,26 +9,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.jay.bihu.R;
-import com.jay.bihu.adapter.QuestionRvAdapter;
+import com.jay.bihu.adapter.FavoriteListRvAdapter;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 
-public class FavoriteActivity extends BaseActivity {
+public class FavoriteListActivity extends BaseActivity {
     private String mToken;
 
-    private RecyclerView mQuestionRv;
+    private RecyclerView mFavoriteRv;
     private SwipeRefreshLayout mRefreshLayout;
-    private QuestionRvAdapter mQuestionRvAdapter;
+    private FavoriteListRvAdapter mFavoriteListRvAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
+        setContentView(R.layout.activity_favorite_list);
 
         mToken = getIntent().getBundleExtra("data").getString("token");
-        mQuestionRv = (RecyclerView) findViewById(R.id.questionRv);
+        mFavoriteRv = (RecyclerView) findViewById(R.id.favoriteRv);
         mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
 
         setUpToolBar();
@@ -49,7 +49,7 @@ public class FavoriteActivity extends BaseActivity {
     private void setUpQuestionRv() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mQuestionRv.setLayoutManager(layoutManager);
+        mFavoriteRv.setLayoutManager(layoutManager);
 
         HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mToken + "&page=0&count=20", new HttpUtils.Callback() {
             @Override
@@ -57,8 +57,8 @@ public class FavoriteActivity extends BaseActivity {
                 if (response.isSuccess()) {
                     User user = new User();
                     user.setToken(mToken);
-                    mQuestionRvAdapter = new QuestionRvAdapter(user, JsonParser.getFavoriteList(response.bodyString()), ApiConfig.FAVORITE_LIST);
-                    mQuestionRv.setAdapter(mQuestionRvAdapter);
+                    mFavoriteListRvAdapter = new FavoriteListRvAdapter(user, JsonParser.getFavoriteList(response.bodyString()));
+                    mFavoriteRv.setAdapter(mFavoriteListRvAdapter);
                 } else showMessage(response.message());
             }
 
@@ -79,7 +79,7 @@ public class FavoriteActivity extends BaseActivity {
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
-                            mQuestionRvAdapter.refreshQuestionList(JsonParser.getFavoriteList(response.bodyString()));
+                            mFavoriteListRvAdapter.refreshFavoriteList(JsonParser.getFavoriteList(response.bodyString()));
                         else showMessage(response.message());
                     }
 

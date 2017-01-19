@@ -1,5 +1,8 @@
 package com.jay.bihu.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +10,7 @@ import java.util.ArrayList;
  * 保存问题信息的类
  */
 
-public class Question {
+public class Question implements Parcelable {
     /**
      * id : 1
      * title : 哦哈哟
@@ -39,6 +42,38 @@ public class Question {
     //自定义键
     private boolean isNaive;
     private boolean isExciting;
+
+    public Question(){}
+
+    private Question(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        content = in.readString();
+        date = in.readString();
+        recent = in.readString();
+        answerCount = in.readInt();
+        authorId = in.readInt();
+        excitingCount = in.readInt();
+        naiveCount = in.readInt();
+        authorName = in.readString();
+        authorAvatar = in.readString();
+        imageUrls = in.createStringArrayList();
+        isNaive = in.readByte() != 0;
+        isExciting = in.readByte() != 0;
+        isFavorite = in.readByte() != 0;
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
 
     public boolean isFavorite() {
         return isFavorite;
@@ -160,5 +195,29 @@ public class Question {
 
     public void setAuthorAvatar(String authorAvatar) {
         this.authorAvatar = authorAvatar;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(date);
+        dest.writeString(recent);
+        dest.writeInt(answerCount);
+        dest.writeInt(authorId);
+        dest.writeInt(excitingCount);
+        dest.writeInt(naiveCount);
+        dest.writeString(authorName);
+        dest.writeString(authorAvatar);
+        dest.writeStringList(imageUrls);
+        dest.writeByte((byte) (isNaive ? 1 : 0));
+        dest.writeByte((byte) (isExciting ? 1 : 0));
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 }

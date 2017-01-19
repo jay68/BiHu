@@ -1,40 +1,37 @@
 package com.jay.bihu.adapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jay.bihu.R;
-import com.jay.bihu.activity.AnswerActivity;
+import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
-import com.jay.bihu.holder.QuestionListViewHolder;
+import com.jay.bihu.holder.QuestionViewHolder;
 import com.jay.bihu.holder.TailViewHolder;
-import com.jay.bihu.utils.MyApplication;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class QuestionRvAdapter extends RecyclerView.Adapter {
+public class QuestionListRvAdapter extends RecyclerView.Adapter {
     private static final int TYPE_QUESTION = 0;
     private static final int TYPE_TAIL = 1;
 
     private ArrayList<Question> mQuestionList;
-    private String mLoadAddress;
     private User mUser;
 
-    public QuestionRvAdapter(User user, ArrayList<Question> questionList, String loadAddress) {
+    public QuestionListRvAdapter(User user, ArrayList<Question> questionList) {
         mUser = user;
         mQuestionList = questionList;
-        mLoadAddress = loadAddress;
+        sort();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getItemCount() - 1)
-            return TYPE_TAIL;
-        return TYPE_QUESTION;
+        return position == getItemCount() - 1 ? TYPE_TAIL : TYPE_QUESTION;
     }
 
     @Override
@@ -42,15 +39,16 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case TYPE_QUESTION:
-                QuestionListViewHolder holder = new QuestionListViewHolder(inflater.inflate(R.layout.item_question, parent, false), mUser, mQuestionList);
+                QuestionViewHolder holder = new QuestionViewHolder(inflater.inflate(R.layout.item_question, parent, false), mUser, mQuestionList);
                 holder.addOnClickListener();
                 return holder;
             case TYPE_TAIL:
                 final TailViewHolder tailViewHolder = new TailViewHolder(inflater.inflate(R.layout.item_tail, parent, false));
-                tailViewHolder.getLoad().setOnClickListener(new View.OnClickListener() {
+                tailViewHolder.getLoadTextView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        tailViewHolder.loading(mLoadAddress, QuestionRvAdapter.this, mQuestionList.size() / 20);
+                        String param = "page=" + mQuestionList.size() / 20 + "&count=20";
+                        tailViewHolder.load(ApiConfig.QUESTION_LIST, param, QuestionListRvAdapter.this, TailViewHolder.TYPE_QUESTION);
                     }
                 });
                 return tailViewHolder;
@@ -62,29 +60,38 @@ public class QuestionRvAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_QUESTION:
-                QuestionListViewHolder questionListViewHolder = (QuestionListViewHolder) holder;
-                questionListViewHolder.updateAllTextView(mQuestionList.get(position));
-                questionListViewHolder.updateAllImage(mQuestionList.get(position));
+                QuestionViewHolder questionViewHolder = (QuestionViewHolder) holder;
+                questionViewHolder.update(mQuestionList.get(position));
                 break;
             case TYPE_TAIL:
-                ((TailViewHolder) holder).loading(mLoadAddress, this, mQuestionList.size() / 20);
+                String param = "page=" + mQuestionList.size() / 20 + "&count=20";
+                ((TailViewHolder) holder).load(ApiConfig.QUESTION_LIST, param, this, TailViewHolder.TYPE_QUESTION);
                 break;
         }
     }
 
     public void refreshQuestionList(ArrayList<Question> newQuestionList) {
         mQuestionList.clear();
-        mQuestionList.addAll(newQuestionList);
-        notifyDataSetChanged();
+        addQuestion(newQuestionList);
     }
 
     public void addQuestion(ArrayList<Question> questionList) {
         mQuestionList.addAll(questionList);
+        sort();
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         return mQuestionList.size() + 1;
+    }
+
+    private void sort() {
+        Collections.sort(mQuestionList, new Comparator<Question>() {
+            @Override
+            public int compare(Question o1, Question o2) {
+                return o2.getRecent().compareTo(o1.getRecent());
+            }
+        });
     }
 }

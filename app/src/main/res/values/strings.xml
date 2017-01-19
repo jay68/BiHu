@@ -33,4 +33,6 @@
     <string name="add_img">添加照片</string>
     <string name="talk">说点什么吧……</string>
     <string name="answer">回答</string>
+    <string name="detail">详情</string>
+    <string name="exciting">赞</string>
 </resources>

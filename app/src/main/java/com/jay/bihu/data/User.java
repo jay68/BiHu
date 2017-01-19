@@ -1,13 +1,15 @@
 package com.jay.bihu.data;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Jay on 2017/1/13.
  * 保存登录用户信息的类
  */
 
-public class User {
+public class User implements Parcelable {
     /**
      * id : 1
      * username : admin
@@ -19,6 +21,27 @@ public class User {
     private String username;
     private String avatarUrl;
     private String token;
+
+    public User() {}
+
+    protected User(Parcel in) {
+        id = in.readInt();
+        username = in.readString();
+        avatarUrl = in.readString();
+        token = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -52,4 +75,16 @@ public class User {
         this.token = token;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(username);
+        dest.writeString(avatarUrl);
+        dest.writeString(token);
+    }
 }
