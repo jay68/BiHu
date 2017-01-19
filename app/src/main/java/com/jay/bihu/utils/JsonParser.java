@@ -54,6 +54,11 @@ public class JsonParser {
                 question.setAuthorAvatar(js.getString("authorAvatar"));
                 question.setExcitingCount(js.getInt("exciting"));
                 question.setNaiveCount(js.getInt("naive"));
+                question.setExciting(js.getBoolean("is_exciting"));
+                question.setNaive(js.getBoolean("is_naive"));
+                if (js.has("is_favorite"))
+                    question.setFavorite(js.getBoolean("is_favorite"));
+                else question.setFavorite(true);
                 JSONArray images = js.getJSONArray("images");
                 for (int j = 0; j < images.length(); j++)
                     question.addImageUrl(images.getJSONObject(j).getString("url"));
@@ -63,13 +68,6 @@ public class JsonParser {
             e.printStackTrace();
             Log.w("tag", e.toString());
         }
-        return questionList;
-    }
-
-    public static ArrayList<Question> getFavoriteList(String data) {
-        ArrayList<Question> questionList = getQuestionList(data);
-        for (Question question : questionList)
-            question.setFavorite(true);
         return questionList;
     }
 
@@ -89,6 +87,8 @@ public class JsonParser {
                 answer.setAuthorAvatar(js.getString("authorAvatar"));
                 answer.setExcitingCount(js.getInt("exciting"));
                 answer.setNaiveCount(js.getInt("naive"));
+                answer.setExciting(js.getBoolean("is_exciting"));
+                answer.setNaive(js.getBoolean("is_naive"));
                 answer.setBest(js.getInt("best") == 1);
                 if (js.has("images")) {
                     JSONArray images = js.getJSONArray("images");

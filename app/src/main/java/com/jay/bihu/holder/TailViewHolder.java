@@ -32,7 +32,7 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void load(String address, String param, final RecyclerView.Adapter adapter, final int type) {
-        if ((adapter.getItemCount() - 1) % 20 != 0) {
+        if (adapter.getItemCount() == 1 || (adapter.getItemCount() - 1) % 20 != 0) {
             mLoadTextView.setText("没有更多了");
             return;
         }
@@ -55,7 +55,7 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
                     else if (type == TYPE_ANSWER)
                         ((AnswerListRvAdapter)adapter).addAnswer(JsonParser.getAnswerList(response.bodyString()));
                     else if (type == TYPE_FAVORITE)
-                        ((FavoriteListRvAdapter)adapter).addFavorite(JsonParser.getFavoriteList(response.bodyString()));
+                        ((FavoriteListRvAdapter)adapter).addFavorite(JsonParser.getQuestionList(response.bodyString()));
 
                 } else {
                     Toast.makeText(MyApplication.getContext(), response.message(), Toast.LENGTH_LONG).show();

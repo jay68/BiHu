@@ -107,9 +107,26 @@
             android:layout_marginTop="10dp">
 
             <ImageButton
+                android:id="@+id/answerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_answer_gray_24dp"/>
+
+            <TextView
+                android:id="@+id/answerCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toEndOf="@+id/answerButton"
+                android:layout_toRightOf="@+id/answerButton"/>
+
+            <ImageButton
                 android:id="@+id/excitingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/answerCount"
+                android:layout_toRightOf="@+id/answerCount"
                 android:background="@drawable/ic_thumb_up_gray_24dp"/>
 
             <TextView
@@ -139,30 +156,12 @@
                 android:layout_toRightOf="@+id/naiveButton"/>
 
             <ImageButton
-                android:id="@+id/answerButton"
+                android:id="@+id/favoriteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/naiveCount"
                 android:layout_toRightOf="@+id/naiveCount"
-                android:background="@drawable/ic_answer_gray_24dp"/>
-
-            <TextView
-                android:id="@+id/answerCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toEndOf="@+id/answerButton"
-                android:layout_toRightOf="@+id/answerButton"/>
-
-            <ImageButton
-                android:id="@+id/favoriteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/answerCount"
-                android:layout_toRightOf="@+id/answerCount"
                 android:background="@drawable/ic_favorite_border_gray_24dp"/>
-
         </RelativeLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

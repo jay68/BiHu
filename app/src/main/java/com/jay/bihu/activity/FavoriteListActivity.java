@@ -55,7 +55,7 @@ public class FavoriteListActivity extends BaseActivity {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    mFavoriteListRvAdapter = new FavoriteListRvAdapter(mUser, JsonParser.getFavoriteList(response.bodyString()));
+                    mFavoriteListRvAdapter = new FavoriteListRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
                     mFavoriteRv.setAdapter(mFavoriteListRvAdapter);
                 } else showMessage(response.message());
             }
@@ -77,7 +77,7 @@ public class FavoriteListActivity extends BaseActivity {
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
-                            mFavoriteListRvAdapter.refreshFavoriteList(JsonParser.getFavoriteList(response.bodyString()));
+                            mFavoriteListRvAdapter.refreshFavoriteList(JsonParser.getQuestionList(response.bodyString()));
                         else showMessage(response.message());
                     }
 

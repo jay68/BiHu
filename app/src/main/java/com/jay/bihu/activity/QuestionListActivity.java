@@ -58,7 +58,7 @@ public class QuestionListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20", new HttpUtils.Callback() {
+                HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
                     @Override
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
@@ -82,7 +82,7 @@ public class QuestionListActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mQuestionRv.setLayoutManager(layoutManager);
 
-        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20", new HttpUtils.Callback() {
+        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
