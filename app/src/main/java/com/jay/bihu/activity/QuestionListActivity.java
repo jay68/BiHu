@@ -110,12 +110,12 @@ public class QuestionListActivity extends BaseActivity {
                         break;
                     case R.id.question:
                         Bundle data = new Bundle();
-                        data.putString("token", mUser.getToken());
+                        data.putParcelable("user", mUser);
                         activityStart(QuestionActivity.class, data);
                         break;
                     case R.id.favorite:
                         Bundle bundle = new Bundle();
-                        bundle.putString("token", mUser.getToken());
+                        bundle.putParcelable("user", mUser);
                         activityStart(FavoriteListActivity.class, bundle);
                         break;
                     case R.id.avatar:

@@ -23,10 +23,11 @@ import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
+import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
 
 public class QuestionActivity extends BaseActivity {
-    private String mToken;
+    private User mUser;
     private boolean isCommitting;
 
     private EditText mQuestionTitle;
@@ -37,7 +38,7 @@ public class QuestionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
-        mToken = getIntent().getBundleExtra("data").getString("token");
+        mUser = getIntent().getBundleExtra("data").getParcelable("user");
         mQuestionDetail = (EditText) findViewById(R.id.questionDetail);
         mQuestionTitle = (EditText) findViewById(R.id.questionTitle);
 
@@ -166,7 +167,7 @@ public class QuestionActivity extends BaseActivity {
             showMessage("内容不能为空");
             return;
         }
-        String param = "title=" + title + "&content=" + content + "&token=" + mToken;
+        String param = "title=" + title + "&content=" + content + "&token=" + mUser.getToken();
         isCommitting = true;
         HttpUtils.sendHttpRequest(ApiConfig.POST_QUESTION, param, new HttpUtils.Callback() {
             @Override

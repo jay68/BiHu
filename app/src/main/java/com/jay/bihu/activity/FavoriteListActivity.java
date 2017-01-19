@@ -16,7 +16,7 @@ import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 
 public class FavoriteListActivity extends BaseActivity {
-    private String mToken;
+    private User mUser;
 
     private RecyclerView mFavoriteRv;
     private SwipeRefreshLayout mRefreshLayout;
@@ -27,7 +27,7 @@ public class FavoriteListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_list);
 
-        mToken = getIntent().getBundleExtra("data").getString("token");
+        mUser = getIntent().getBundleExtra("data").getParcelable("user");
         mFavoriteRv = (RecyclerView) findViewById(R.id.favoriteRv);
         mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
 
@@ -51,13 +51,11 @@ public class FavoriteListActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mFavoriteRv.setLayoutManager(layoutManager);
 
-        HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mToken + "&page=0&count=20", new HttpUtils.Callback() {
+        HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0&count=20", new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    User user = new User();
-                    user.setToken(mToken);
-                    mFavoriteListRvAdapter = new FavoriteListRvAdapter(user, JsonParser.getFavoriteList(response.bodyString()));
+                    mFavoriteListRvAdapter = new FavoriteListRvAdapter(mUser, JsonParser.getFavoriteList(response.bodyString()));
                     mFavoriteRv.setAdapter(mFavoriteListRvAdapter);
                 } else showMessage(response.message());
             }
@@ -74,7 +72,7 @@ public class FavoriteListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mToken + "&page=0&count=20", new HttpUtils.Callback() {
+                HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0&count=20", new HttpUtils.Callback() {
                     @Override
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
