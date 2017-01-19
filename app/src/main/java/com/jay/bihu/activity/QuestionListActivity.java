@@ -36,6 +36,8 @@ public class QuestionListActivity extends BaseActivity {
     private User mUser;
     private QuestionListRvAdapter mQuestionListRvAdapter;
 
+    private boolean mLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,26 +55,41 @@ public class QuestionListActivity extends BaseActivity {
         setUpRefreshLayout();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        uploadData();
+    }
+
     private void setUpRefreshLayout() {
         mRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
-                    @Override
-                    public void onResponse(HttpUtils.Response response) {
-                        mRefreshLayout.setRefreshing(false);
-                        if (response.isSuccess())
-                            mQuestionListRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.bodyString()));
-                        else showMessage(response.message());
-                    }
+                uploadData();
+            }
+        });
+    }
 
-                    @Override
-                    public void onFail(Exception e) {
-                        showMessage(e.toString());
-                        mRefreshLayout.setRefreshing(false);
-                    }
-                });
+    private void uploadData() {
+        if (mLoading)
+            return;
+        mLoading = true;
+        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
+            @Override
+            public void onResponse(HttpUtils.Response response) {
+                mLoading = false;
+                mRefreshLayout.setRefreshing(false);
+                if (response.isSuccess())
+                    mQuestionListRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.bodyString()));
+                else showMessage(response.message());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                showMessage(e.toString());
+                mRefreshLayout.setRefreshing(false);
+                mLoading = false;
             }
         });
     }
@@ -82,9 +99,11 @@ public class QuestionListActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mQuestionRv.setLayoutManager(layoutManager);
 
+        mLoading = true;
         HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
+                mLoading = false;
                 if (response.isSuccess()) {
                     mQuestionListRvAdapter = new QuestionListRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
                     mQuestionRv.setAdapter(mQuestionListRvAdapter);
@@ -94,6 +113,7 @@ public class QuestionListActivity extends BaseActivity {
             @Override
             public void onFail(Exception e) {
                 showMessage(e.toString());
+                mLoading = false;
             }
         });
     }

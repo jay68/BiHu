@@ -33,6 +33,7 @@
             android:label="@string/my_favorite">
         </activity>
         <activity android:name=".activity.AnswerListActivity"
+                  android:launchMode="singleTask"
             android:label="@string/detail">
         </activity>
         <activity android:name=".activity.AnswerActivity"
