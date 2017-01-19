@@ -50,15 +50,11 @@ public class JsonParser {
                 question.setAuthorId(js.getInt("authorId"));
                 question.setAuthorName(js.getString("authorName"));
                 question.setAuthorAvatar(js.getString("authorAvatar"));
-                if (js.has("exciting"))
-                    question.setExcitingCount(js.getInt("exciting"));
-                if (js.has("naive"))
-                    question.setNaiveCount(js.getInt("naive"));
-                if (js.has("images")) {
-                    JSONArray images = js.getJSONArray("images");
-                    for (int j = 0; j < images.length(); j++)
-                        question.addImageUrl(images.getString(i));
-                }
+                question.setExcitingCount(js.getInt("exciting"));
+                question.setNaiveCount(js.getInt("naive"));
+                JSONArray images = js.getJSONArray("images");
+                for (int j = 0; j < images.length(); j++)
+                    question.addImageUrl(images.getString(i));
                 questionList.add(question);
             }
         } catch (JSONException e) {
@@ -69,7 +65,7 @@ public class JsonParser {
     }
 
     public static ArrayList<Question> getFavoriteList(String data) {
-        ArrayList<Question> questionList = getQuestionList(data.replace("\"answers\":", "\"questions\":"));
+        ArrayList<Question> questionList = getQuestionList(data);
         for (Question question : questionList)
             question.setFavorite(true);
         return questionList;

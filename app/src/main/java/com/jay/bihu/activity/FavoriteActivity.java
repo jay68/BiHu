@@ -15,10 +15,6 @@ import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 
-/**
- * Created by Jay on 2017/1/17.
- */
-
 public class FavoriteActivity extends BaseActivity {
     private String mToken;
 
