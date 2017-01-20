@@ -32,11 +32,13 @@
             android:name=".activity.FavoriteListActivity"
             android:label="@string/my_favorite">
         </activity>
-        <activity android:name=".activity.AnswerListActivity"
-                  android:launchMode="singleTask"
-            android:label="@string/detail">
+        <activity
+            android:name=".activity.AnswerListActivity"
+            android:label="@string/detail"
+            android:launchMode="singleTask">
         </activity>
-        <activity android:name=".activity.AnswerActivity"
+        <activity
+            android:name=".activity.AnswerActivity"
             android:label="@string/answer">
         </activity>
     </application>

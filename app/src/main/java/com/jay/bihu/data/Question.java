@@ -22,7 +22,7 @@ public class Question implements Parcelable {
      * excitingCount : 2
      * naiveCount : 0
      * authorName : admin
-     * authorAvatar : https://avatars1.githubusercontent.com/u/14852537?v=3&s=460
+     * authorAvatarUrlString : https://avatars1.githubusercontent.com/u/14852537?v=3&s=460
      */
 
     //原键
@@ -36,8 +36,8 @@ public class Question implements Parcelable {
     private int excitingCount;
     private int naiveCount;
     private String authorName;
-    private String authorAvatar;
-    private ArrayList<String> imageUrls = new ArrayList<>();
+    private String authorAvatarUrlString;
+    private ArrayList<String> imageUrlStrings = new ArrayList<>();
 
     //自定义键
     private boolean isNaive;
@@ -56,8 +56,8 @@ public class Question implements Parcelable {
         excitingCount = in.readInt();
         naiveCount = in.readInt();
         authorName = in.readString();
-        authorAvatar = in.readString();
-        imageUrls = in.createStringArrayList();
+        authorAvatarUrlString = in.readString();
+        imageUrlStrings = in.createStringArrayList();
         isNaive = in.readByte() != 0;
         isExciting = in.readByte() != 0;
         isFavorite = in.readByte() != 0;
@@ -80,11 +80,11 @@ public class Question implements Parcelable {
     }
 
     public String getImageUrl(int index) {
-        return imageUrls.get(index);
+        return imageUrlStrings.get(index);
     }
 
     public void addImageUrl(String url) {
-        imageUrls.add(url);
+        imageUrlStrings.add(url);
     }
 
     public void setFavorite(boolean favorite) {
@@ -189,12 +189,12 @@ public class Question implements Parcelable {
         this.authorName = authorName;
     }
 
-    public String getAuthorAvatar() {
-        return authorAvatar;
+    public String getAuthorAvatarUrlString() {
+        return authorAvatarUrlString;
     }
 
-    public void setAuthorAvatar(String authorAvatar) {
-        this.authorAvatar = authorAvatar;
+    public void setAuthorAvatarUrlString(String authorAvatarUrlString) {
+        this.authorAvatarUrlString = authorAvatarUrlString;
     }
 
     @Override
@@ -214,8 +214,8 @@ public class Question implements Parcelable {
         dest.writeInt(excitingCount);
         dest.writeInt(naiveCount);
         dest.writeString(authorName);
-        dest.writeString(authorAvatar);
-        dest.writeStringList(imageUrls);
+        dest.writeString(authorAvatarUrlString);
+        dest.writeStringList(imageUrlStrings);
         dest.writeByte((byte) (isNaive ? 1 : 0));
         dest.writeByte((byte) (isExciting ? 1 : 0));
         dest.writeByte((byte) (isFavorite ? 1 : 0));

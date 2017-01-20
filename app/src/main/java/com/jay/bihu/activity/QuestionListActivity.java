@@ -3,6 +3,8 @@ package com.jay.bihu.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -20,18 +22,26 @@ import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionListRvAdapter;
-import com.jay.bihu.data.User;
 import com.jay.bihu.config.ApiConfig;
+import com.jay.bihu.data.User;
+import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+
+import org.json.JSONObject;
+
+import java.io.File;
 
 public class QuestionListActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private RecyclerView mQuestionRv;
     private SwipeRefreshLayout mRefreshLayout;
+    private CircleImageView mAvatar;
 
     private User mUser;
     private QuestionListRvAdapter mQuestionListRvAdapter;
@@ -139,7 +149,7 @@ public class QuestionListActivity extends BaseActivity {
                         activityStart(FavoriteListActivity.class, bundle);
                         break;
                     case R.id.avatar:
-                        upLoadAvatar();
+                        checkAndOpenAlbum();
                         break;
                     case R.id.changePassword:
                         changePassword();
@@ -155,22 +165,50 @@ public class QuestionListActivity extends BaseActivity {
 
         //header
         View view = mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        CircleImageView avatar = (CircleImageView) view.findViewById(R.id.avatar);
+        mAvatar = (CircleImageView) view.findViewById(R.id.avatar);
         TextView username = (TextView) view.findViewById(R.id.username);
 
         username.setText(mUser.getUsername());
-        //获取头像
-        avatar.setOnClickListener(new View.OnClickListener() {
+        mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upLoadAvatar();
+                checkAndOpenAlbum();
             }
         });
-
     }
 
-    private void upLoadAvatar() {
+    private void upLoadAvatar(Uri uri) {
+        Bitmap avatar = BitmapUtils.toBitmap(uri);
+        mAvatar.setImageBitmap(avatar);
+        HttpUtils.qiniuImageUpload("avatar_" + System.currentTimeMillis() + ".jpg", BitmapUtils.toBytes(avatar),
+                new UpCompletionHandler() {
+                    @Override
+                    public void complete(String key, ResponseInfo info, JSONObject response) {
 
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
+                case OPEN_ALBUM:
+                    File file = new File(getExternalCacheDir(), "avatar");
+                    if (!file.exists())
+                        file.mkdir();
+                    cropImage(BitmapUtils.parseImageUriString(data), "file://" + file.getPath() + "/" + mUser.getId());
+                    break;
+                case CROP_IMAGE:
+                    upLoadAvatar(data.getData());
+                    break;
+            }
     }
 
     private void changePassword() {

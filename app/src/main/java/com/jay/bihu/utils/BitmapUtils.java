@@ -11,20 +11,41 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+
 /**
  * Created by Jay on 2017/1/14.
  * 图片处理工具类
  */
 
 public class BitmapUtils {
-    public static Bitmap bytesToBitmap(byte[] src) {
+    public static Bitmap toBitmap(byte[] src) {
         return BitmapFactory.decodeByteArray(src, 0, src.length);
     }
 
-    public static String parseImageUri(Intent data) {
+    public static Bitmap toBitmap(Uri uri) {
+        try {
+            return BitmapFactory.decodeStream(MyApplication.getContext().getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static byte[] toBytes(Bitmap bm) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        return outputStream.toByteArray();
+    }
+
+    public static String parseImageUriString(Intent data) {
+        String uriString;
         if (Build.VERSION.SDK_INT >= 19)
-            return handleImageOnKitKat(data);
-        else return handleImageBeforeKitKat(data);
+            uriString =handleImageOnKitKat(data);
+        else uriString = handleImageBeforeKitKat(data);
+
+        return "file://" + uriString;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

@@ -1,6 +1,5 @@
 package com.jay.bihu.data;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,13 +12,13 @@ public class User implements Parcelable {
     /**
      * id : 1
      * username : admin
-     * avatarUrl : null
+     * avatarUrlString : null
      * token : 6c5f989bdc56fe25f8a2b08443f354c910280c50
      */
 
     private int id;
     private String username;
-    private String avatarUrl;
+    private String avatarUrlString;
     private String token;
 
     public User() {}
@@ -27,7 +26,7 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         id = in.readInt();
         username = in.readString();
-        avatarUrl = in.readString();
+        avatarUrlString = in.readString();
         token = in.readString();
     }
 
@@ -59,12 +58,12 @@ public class User implements Parcelable {
         this.username = username;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getAvatarUrlString() {
+        return avatarUrlString;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatarUrlString(String avatarUrlString) {
+        this.avatarUrlString = avatarUrlString;
     }
 
     public String getToken() {
@@ -84,7 +83,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(username);
-        dest.writeString(avatarUrl);
+        dest.writeString(avatarUrlString);
         dest.writeString(token);
     }
 }

@@ -103,6 +103,7 @@ public class LoginActivity extends BaseActivity {
     private void checkResponseStatusCode(int statusCode, final HttpUtils.Response response) {
         switch (statusCode) {
             case 200:
+                mDialog.dismiss();
                 showMessage("欢迎来到逼乎社区", Toast.LENGTH_SHORT);
                 String username = mDialog.getUsernameWrapper().getEditText().getText().toString();
                 String password = mDialog.getPasswordWrapper().getEditText().getText().toString();
@@ -110,6 +111,7 @@ public class LoginActivity extends BaseActivity {
                 mEditor.putString("password", password);
                 mEditor.putBoolean("isLogin", true);
                 mEditor.apply();
+
                 Bundle data = new Bundle();
                 data.putString("data", response.bodyString());
                 activityStart(QuestionListActivity.class, data);

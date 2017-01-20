@@ -3,6 +3,10 @@ package com.jay.bihu.utils;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +29,12 @@ public class HttpUtils {
         void onResponse(Response response);
 
         void onFail(Exception e);
+    }
+
+    public static void qiniuImageUpload(String name, byte[] imageBytes, UpCompletionHandler upCompletionHandler) {
+        String token;
+        UploadManager uploadManager = new UploadManager();
+        uploadManager.put(imageBytes, name, token, upCompletionHandler);
     }
 
     public static void sendHttpRequest(String address, String param) {

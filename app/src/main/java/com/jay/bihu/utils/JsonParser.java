@@ -23,7 +23,7 @@ public class JsonParser {
         try {
             JSONObject object = new JSONObject(data);
             user.setId(object.getInt("id"));
-            user.setAvatarUrl(object.getString("avatar"));
+            user.setAvatarUrlString(object.getString("avatar"));
             user.setToken(object.getString("token"));
             user.setUsername(object.getString("username"));
         } catch (JSONException e) {
@@ -51,7 +51,7 @@ public class JsonParser {
                 question.setAnswerCount(js.getInt("answerCount"));
                 question.setAuthorId(js.getInt("authorId"));
                 question.setAuthorName(js.getString("authorName"));
-                question.setAuthorAvatar(js.getString("authorAvatar"));
+                question.setAuthorAvatarUrlString(js.getString("authorAvatar"));
                 question.setExcitingCount(js.getInt("exciting"));
                 question.setNaiveCount(js.getInt("naive"));
                 question.setExciting(js.getBoolean("is_exciting"));
@@ -84,7 +84,7 @@ public class JsonParser {
                 answer.setDate(js.getString("date"));
                 answer.setAuthorId(js.getInt("authorId"));
                 answer.setAuthorName(js.getString("authorName"));
-                answer.setAuthorAvatar(js.getString("authorAvatar"));
+                answer.setAuthorAvatarUrlString(js.getString("authorAvatar"));
                 answer.setExcitingCount(js.getInt("exciting"));
                 answer.setNaiveCount(js.getInt("naive"));
                 answer.setExciting(js.getBoolean("is_exciting"));

@@ -17,7 +17,7 @@ public class Answer {
      * best : 1
      * authorId : 2
      * authorName : test
-     * authorAvatar : null
+     * authorAvatarUrlString : null
      * images : []
      */
 
@@ -30,8 +30,8 @@ public class Answer {
     private boolean best;
     private int authorId;
     private String authorName;
-    private String authorAvatar;
-    private ArrayList<String> imageUrls;
+    private String authorAvatarUrlString;
+    private ArrayList<String> imageUrlStrings = new ArrayList<>();
 
     //自定义键
     private boolean isNaive;
@@ -101,20 +101,20 @@ public class Answer {
         this.authorName = authorName;
     }
 
-    public String getAuthorAvatar() {
-        return authorAvatar;
+    public String getAuthorAvatarUrlString() {
+        return authorAvatarUrlString;
     }
 
-    public void setAuthorAvatar(String authorAvatar) {
-        this.authorAvatar = authorAvatar;
+    public void setAuthorAvatarUrlString(String authorAvatarUrlString) {
+        this.authorAvatarUrlString = authorAvatarUrlString;
     }
 
     public String getImageUrl(int index) {
-        return imageUrls.get(index);
+        return imageUrlStrings.get(index);
     }
 
     public void addImageUrl(String url) {
-        imageUrls.add(url);
+        imageUrlStrings.add(url);
     }
 
     public boolean isNaive() {
