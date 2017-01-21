@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -36,6 +38,13 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class QuestionListActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
@@ -184,7 +193,7 @@ public class QuestionListActivity extends BaseActivity {
 
                 @Override
                 public void onFail(Exception e) {
-
+                    showMessage(e.toString());
                 }
             });
     }
@@ -197,7 +206,7 @@ public class QuestionListActivity extends BaseActivity {
             @Override
             public void complete(final String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
-                    String param = "token=" + mUser.getToken() + "&face=" + FilePathConfig.QINIU_URL + key;
+                    String param = "token=" + mUser.getToken() + "&avatar=" + FilePathConfig.QINIU_URL + key;
                     HttpUtils.sendHttpRequest(ApiConfig.MODIFY_AVATAR, param, new HttpUtils.Callback() {
                         @Override
                         public void onResponse(HttpUtils.Response response) {
@@ -263,6 +272,7 @@ public class QuestionListActivity extends BaseActivity {
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("password", password);
                             editor.apply();
+                            mUser.setToken(JsonParser.getElement(response.bodyString(), "token"));
                         } else showMessage(response.message());
                     }
 

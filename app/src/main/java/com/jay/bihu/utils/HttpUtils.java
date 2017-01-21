@@ -8,6 +8,7 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -62,11 +63,11 @@ public class HttpUtils {
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setReadTimeout(5 * 1000);
                     connection.setConnectTimeout(10 * 1000);
-                    connection.setDoOutput(true);
                     if (param == null)
                         connection.setRequestMethod("GET");
                     else {
                         connection.setRequestMethod("POST");
+                        connection.setDoOutput(true);
                         OutputStream os = connection.getOutputStream();
                         os.write(param.getBytes());
                         os.flush();
@@ -74,16 +75,15 @@ public class HttpUtils {
                     }
                     if (connection.getResponseCode() == 200) {
                         InputStream is = connection.getInputStream();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                        final StringBuilder response = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null)
-                            response.append(line);
-                        reader.close();
+                        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        byte[] temp = new byte[1024];
+                        while (is.read(temp) != -1)
+                            outputStream.write(temp);
+                        is.close();
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                callback.onResponse(new Response(response.toString()));
+                                callback.onResponse(new Response(outputStream.toByteArray()));
                             }
                         });
                     } else throw new Exception("奇怪的错误");
@@ -106,14 +106,18 @@ public class HttpUtils {
     public static class Response {
         private int mStatus;
         private String mInfo;
-        private String mData;
+        private byte[] mData;
 
-        Response(String response) {
-            mInfo = JsonParser.getElement(response, "info");
-            mStatus = Integer.parseInt(JsonParser.getElement(response, "status"));
-            mData = JsonParser.getElement(response, "data");
-            if (mData == null)
+        Response(byte[] response) {
+            String rawData = new String(response);
+            mInfo = JsonParser.getElement(rawData, "info");
+            if (mInfo == null) {
+                mStatus = 200;
                 mData = response;
+            } else {
+                mStatus = Integer.parseInt(JsonParser.getElement(rawData, "status"));
+                mData = JsonParser.getElement(rawData, "data").getBytes();
+            }
         }
 
         public int getStatusCode() {
@@ -133,11 +137,11 @@ public class HttpUtils {
         }
 
         public String bodyString() {
-            return mData;
+            return new String(mData);
         }
 
         public byte[] bodyBytes() {
-            return mData.getBytes();
+            return mData;
         }
     }
 }
