@@ -116,7 +116,9 @@ public class HttpUtils {
                 mData = response;
             } else {
                 mStatus = Integer.parseInt(JsonParser.getElement(rawData, "status"));
-                mData = JsonParser.getElement(rawData, "data").getBytes();
+                if (JsonParser.getElement(rawData, "data") != null)
+                    mData = JsonParser.getElement(rawData, "data").getBytes();
+                else mData = null;
             }
         }
 

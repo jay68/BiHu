@@ -206,7 +206,7 @@ public class QuestionListActivity extends BaseActivity {
             @Override
             public void complete(final String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
-                    String param = "token=" + mUser.getToken() + "&avatar=" + FilePathConfig.QINIU_URL + key;
+                    String param = "token=" + mUser.getToken() + "&avatar=http://" + FilePathConfig.QINIU_URL + key;
                     HttpUtils.sendHttpRequest(ApiConfig.MODIFY_AVATAR, param, new HttpUtils.Callback() {
                         @Override
                         public void onResponse(HttpUtils.Response response) {
