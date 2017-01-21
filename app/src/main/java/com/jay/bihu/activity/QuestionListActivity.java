@@ -29,10 +29,6 @@ import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-
-import org.json.JSONObject;
 
 import java.io.File;
 
@@ -180,13 +176,7 @@ public class QuestionListActivity extends BaseActivity {
     private void upLoadAvatar(Uri uri) {
         Bitmap avatar = BitmapUtils.toBitmap(uri);
         mAvatar.setImageBitmap(avatar);
-        HttpUtils.qiniuImageUpload("avatar_" + System.currentTimeMillis() + ".jpg", BitmapUtils.toBytes(avatar),
-                new UpCompletionHandler() {
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject response) {
 
-                    }
-                });
     }
 
     @Override

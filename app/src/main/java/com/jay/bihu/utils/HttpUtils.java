@@ -31,12 +31,6 @@ public class HttpUtils {
         void onFail(Exception e);
     }
 
-    public static void qiniuImageUpload(String name, byte[] imageBytes, UpCompletionHandler upCompletionHandler) {
-        String token;
-        UploadManager uploadManager = new UploadManager();
-        uploadManager.put(imageBytes, name, token, upCompletionHandler);
-    }
-
     public static void sendHttpRequest(String address, String param) {
         sendHttpRequest(address, param, new Callback() {
             @Override
