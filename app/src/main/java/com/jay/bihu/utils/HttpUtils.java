@@ -2,6 +2,11 @@ package com.jay.bihu.utils;
 
 import android.os.Handler;
 
+import com.qiniu.android.common.Zone;
+import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +24,13 @@ public class HttpUtils {
         void onResponse(Response response);
 
         void onFail(Exception e);
+    }
+
+    public static void uploadFileToQiniu(byte[] data, String name, UpCompletionHandler upCompletionHandler) {
+        Configuration config = new Configuration.Builder().zone(Zone.zone2).build();
+        String token = "IyrjaIn4lQlsS2o4rYdZJNoMpbpPcx0AzBM_HdJK:ElHspM3v-N1FI1-4R1pj_-PPr1M=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjoxNDg1MDQ1ODg4fQ==";
+        UploadManager uploadManager = new UploadManager(config);
+        uploadManager.put(data, name, token, upCompletionHandler, null);
     }
 
     public static void sendHttpRequest(String address, String param) {

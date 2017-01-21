@@ -12,8 +12,6 @@ import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.view.LoginDialog;
-import com.tencent.cos.COSClient;
-import com.tencent.cos.COSClientConfig;
 
 public class LoginActivity extends BaseActivity {
     private LoginDialog mDialog;
@@ -61,7 +59,7 @@ public class LoginActivity extends BaseActivity {
         mDialog.getUsernameWrapper().getEditText().setText(username);
         mDialog.getPasswordWrapper().getEditText().setText(password);
         boolean isLogin = mPreferences.getBoolean("isLogin", false);
-        if (isLogin/* && NetWorkUtils.isNetworkConnected(this)*/)
+        if (isLogin)
             login(username, password);
     }
 

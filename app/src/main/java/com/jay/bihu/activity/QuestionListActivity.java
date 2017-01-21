@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionListRvAdapter;
 import com.jay.bihu.config.ApiConfig;
+import com.jay.bihu.config.FilePathConfig;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
@@ -165,21 +166,55 @@ public class QuestionListActivity extends BaseActivity {
 
         //header
         View view = mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        mAvatar = (CircleImageView) view.findViewById(R.id.avatar);
         TextView username = (TextView) view.findViewById(R.id.username);
-
         username.setText(mUser.getUsername());
+        mAvatar = (CircleImageView) view.findViewById(R.id.avatar);
         mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkAndOpenAlbum();
             }
         });
+        if (!mUser.getAvatarUrlString().equals("null"))
+            HttpUtils.sendHttpRequest(mUser.getAvatarUrlString(), null, new HttpUtils.Callback() {
+                @Override
+                public void onResponse(HttpUtils.Response response) {
+                    mAvatar.setImageBitmap(BitmapUtils.toBitmap(response.bodyBytes()));
+                }
+
+                @Override
+                public void onFail(Exception e) {
+
+                }
+            });
     }
 
     private void upLoadAvatar(Uri uri) {
         Bitmap avatar = BitmapUtils.toBitmap(uri);
         mAvatar.setImageBitmap(avatar);
+
+        HttpUtils.uploadFileToQiniu(BitmapUtils.toBytes(avatar), "avatar_" + mUser.getId() + "_" + System.currentTimeMillis(), new UpCompletionHandler() {
+            @Override
+            public void complete(final String key, ResponseInfo info, JSONObject response) {
+                if (info.isOK()) {
+                    String param = "token=" + mUser.getToken() + "&face=" + FilePathConfig.QINIU_URL + key;
+                    HttpUtils.sendHttpRequest(ApiConfig.MODIFY_AVATAR, param, new HttpUtils.Callback() {
+                        @Override
+                        public void onResponse(HttpUtils.Response response) {
+                            if (response.isSuccess()) {
+                                showMessage("上传头像成功", Toast.LENGTH_SHORT);
+                                mUser.setAvatarUrlString(FilePathConfig.QINIU_URL + key);
+                            } else showMessage(response.message());
+                        }
+
+                        @Override
+                        public void onFail(Exception e) {
+                            showMessage(e.toString());
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
