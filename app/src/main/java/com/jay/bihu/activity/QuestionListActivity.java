@@ -180,13 +180,6 @@ public class QuestionListActivity extends BaseActivity {
     private void upLoadAvatar(Uri uri) {
         Bitmap avatar = BitmapUtils.toBitmap(uri);
         mAvatar.setImageBitmap(avatar);
-        HttpUtils.qiniuImageUpload("avatar_" + System.currentTimeMillis() + ".jpg", BitmapUtils.toBytes(avatar),
-                new UpCompletionHandler() {
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject response) {
-
-                    }
-                });
     }
 
     @Override

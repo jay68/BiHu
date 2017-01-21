@@ -1,18 +1,8 @@
 package com.jay.bihu.utils;
 
 import android.os.Handler;
-import android.widget.Toast;
-
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -29,12 +19,6 @@ public class HttpUtils {
         void onResponse(Response response);
 
         void onFail(Exception e);
-    }
-
-    public static void qiniuImageUpload(String name, byte[] imageBytes, UpCompletionHandler upCompletionHandler) {
-        String token;
-        UploadManager uploadManager = new UploadManager();
-        uploadManager.put(imageBytes, name, token, upCompletionHandler);
     }
 
     public static void sendHttpRequest(String address, String param) {
@@ -109,21 +93,15 @@ public class HttpUtils {
 
     public static class Response {
         private int mStatus;
-        private String mRawData;
         private String mInfo;
         private String mData;
 
         Response(String response) {
-            mRawData = response;
-            try {
-                JSONObject object = new JSONObject(response);
-                mInfo = object.getString("info");
-                mStatus = object.getInt("status");
-                mData = object.getString("data");
-            } catch (JSONException e) {
-                e.printStackTrace();
-                mData = mRawData;
-            }
+            mInfo = JsonParser.getElement(response, "info");
+            mStatus = Integer.parseInt(JsonParser.getElement(response, "status"));
+            mData = JsonParser.getElement(response, "data");
+            if (mData == null)
+                mData = response;
         }
 
         public int getStatusCode() {
