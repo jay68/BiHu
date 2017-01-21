@@ -1,6 +1,9 @@
 package com.jay.bihu.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,7 +14,10 @@ import android.widget.Toast;
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.User;
+import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
+
+import java.io.File;
 
 public class QuestionActivity extends BaseActivity {
     private User mUser;
@@ -19,6 +25,8 @@ public class QuestionActivity extends BaseActivity {
 
     private EditText mQuestionTitle;
     private EditText mQuestionDetail;
+
+    private Uri mImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,28 @@ public class QuestionActivity extends BaseActivity {
         mQuestionTitle = (EditText) findViewById(R.id.questionTitle);
 
         setUpToolBar();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
+                case OPEN_ALBUM:
+                    File file = new File(getExternalCacheDir(), "img");
+                    if (!file.exists())
+                        file.mkdir();
+                    cropImage(BitmapUtils.parseImageUriString(data), "file://" + file.getPath() + "/" + System.currentTimeMillis());
+                    break;
+                case CROP_IMAGE:
+                    mImageUri = data.getData();
+                    break;
+            }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void setUpToolBar() {
@@ -60,6 +90,7 @@ public class QuestionActivity extends BaseActivity {
                 commit();
                 break;
             case R.id.add_image:
+                checkAndOpenAlbum();
                 break;
         }
         return true;

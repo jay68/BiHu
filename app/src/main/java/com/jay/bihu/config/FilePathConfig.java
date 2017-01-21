@@ -6,8 +6,7 @@ import com.jay.bihu.utils.MyApplication;
  * Created by Jay on 2017/1/20.
  * 关于一些命名规则（先写这吧）
  * 头像：avatar_uid
- * 问题图片：question_qid_时间戳
- * 回答图片：answer_aid_时间戳
+ * 图片：时间戳
  */
 
 public class FilePathConfig {

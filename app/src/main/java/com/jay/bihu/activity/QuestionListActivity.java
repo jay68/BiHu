@@ -193,7 +193,7 @@ public class QuestionListActivity extends BaseActivity {
         Bitmap avatar = BitmapUtils.toBitmap(uri);
         mAvatar.setImageBitmap(avatar);
 
-        HttpUtils.uploadFileToQiniu(BitmapUtils.toBytes(avatar), "avatar_" + mUser.getId() + "_" + System.currentTimeMillis(), new UpCompletionHandler() {
+        HttpUtils.uploadFileToQiniu(BitmapUtils.toBytes(avatar), "avatar_" + mUser.getId() + "_" + System.currentTimeMillis() + ".jpg", new UpCompletionHandler() {
             @Override
             public void complete(final String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
