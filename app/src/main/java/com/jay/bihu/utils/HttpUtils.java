@@ -1,16 +1,23 @@
 package com.jay.bihu.utils;
 
 import android.os.Handler;
+import android.widget.Toast;
 
+import com.jay.bihu.config.FilePathConfig;
 import com.qiniu.android.common.Zone;
+import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 
-import java.io.BufferedReader;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,11 +34,63 @@ public class HttpUtils {
         void onFail(Exception e);
     }
 
-    public static void uploadFileToQiniu(byte[] data, String name, UpCompletionHandler upCompletionHandler) {
+    public static void loadImage(String address, Callback callback) {
+        String name = address.replace(FilePathConfig.QINIU_URL, "");
+        File file = new File(MyApplication.getContext().getExternalCacheDir(), name);
+        if (file.exists()) {
+            //文件存在则在文件中读取
+            FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(file);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] temp = new byte[1024];
+                while (inputStream.read(temp) != -1)
+                    outputStream.write(temp);
+                callback.onResponse(new Response(outputStream.toByteArray()));
+            } catch (IOException e) {
+                e.printStackTrace();
+                callback.onFail(e);
+            } finally {
+                if (inputStream != null)
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        callback.onFail(e);
+                    }
+            }
+        } else {
+            //文件不存在则在网络中读取
+            sendHttpRequest(address, null, callback);
+        }
+    }
+
+    public static void uploadImage(byte[] data, String name, final String param, final String address) {
         Configuration config = new Configuration.Builder().zone(Zone.zone2).build();
-        String token = "IyrjaIn4lQlsS2o4rYdZJNoMpbpPcx0AzBM_HdJK:ElHspM3v-N1FI1-4R1pj_-PPr1M=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjoxNDg1MDQ1ODg4fQ==";
+        String token = "IyrjaIn4lQlsS2o4rYdZJNoMpbpPcx0AzBM_HdJK:Cqsf3KgUYjkuIM_0gH63eZxsn3E=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjoxNDg1MDg2MDkwfQ==";
         UploadManager uploadManager = new UploadManager(config);
-        uploadManager.put(data, name, token, upCompletionHandler, null);
+        uploadManager.put(data, name, token, new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                if (info.isOK()) {
+                    sendHttpRequest(address, param, new Callback() {
+                        @Override
+                        public void onResponse(Response response) {
+                            if (response.isSuccess())
+                                Toast.makeText(MyApplication.getContext(), "上传图片成功", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(MyApplication.getContext(), response.message(), Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFail(Exception e) {
+                            Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else
+                    Toast.makeText(MyApplication.getContext(), info.error, Toast.LENGTH_LONG).show();
+            }
+        }, null);
     }
 
     public static void sendHttpRequest(String address, String param) {
@@ -74,19 +133,23 @@ public class HttpUtils {
                         os.close();
                     }
                     if (connection.getResponseCode() == 200) {
-                        InputStream is = connection.getInputStream();
-                        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                        byte[] temp = new byte[1024];
-                        while (is.read(temp) != -1)
-                            outputStream.write(temp);
-                        is.close();
+                        final byte[] temp = read(connection.getInputStream());
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                callback.onResponse(new Response(outputStream.toByteArray()));
+                                callback.onResponse(new Response(temp));
                             }
                         });
-                    } else throw new Exception("奇怪的错误");
+
+                        if (connection.getRequestMethod().equals("GET")) {
+                            //缓存图片
+                            String name = address.replace(FilePathConfig.QINIU_URL, "");
+                            File file = new File(MyApplication.getContext().getExternalCacheDir(), name);
+                            FileOutputStream os = new FileOutputStream(file);
+                            os.write(temp);
+                            os.close();
+                        }
+                    } else throw new Exception("无法连接服务器");
                 } catch (final Exception e) {
                     e.printStackTrace();
                     handler.post(new Runnable() {
@@ -101,6 +164,15 @@ public class HttpUtils {
                 }
             }
         }).start();
+    }
+
+    private static byte[] read(InputStream is) throws IOException {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] temp = new byte[1024];
+        while (is.read(temp) != -1)
+            outputStream.write(temp);
+        is.close();
+        return outputStream.toByteArray();
     }
 
     public static class Response {

@@ -11,5 +11,5 @@ import com.jay.bihu.utils.MyApplication;
 
 public class FilePathConfig {
     public static final String AVATAR_DIR = "file://" + MyApplication.getContext().getExternalCacheDir()+"/avatar/";    //使用时在其后拼接uid
-    public static final String QINIU_URL = "ok4qp4ux0.bkt.clouddn.com/";   //使用时在其后拼接文件名
+    public static final String QINIU_URL = "http://ok4qp4ux0.bkt.clouddn.com/";   //使用时在其后拼接文件名
 }

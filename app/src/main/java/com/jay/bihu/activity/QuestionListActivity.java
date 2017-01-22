@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +15,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,19 +30,6 @@ import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class QuestionListActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
@@ -185,10 +170,12 @@ public class QuestionListActivity extends BaseActivity {
             }
         });
         if (!mUser.getAvatarUrlString().equals("null"))
-            HttpUtils.sendHttpRequest(mUser.getAvatarUrlString(), null, new HttpUtils.Callback() {
+            HttpUtils.loadImage(mUser.getAvatarUrlString(), new HttpUtils.Callback() {
                 @Override
                 public void onResponse(HttpUtils.Response response) {
-                    mAvatar.setImageBitmap(BitmapUtils.toBitmap(response.bodyBytes()));
+                    if (response.isSuccess())
+                        mAvatar.setImageBitmap(BitmapUtils.toBitmap(response.bodyBytes()));
+                    else showMessage(response.message());
                 }
 
                 @Override
@@ -201,29 +188,9 @@ public class QuestionListActivity extends BaseActivity {
     private void upLoadAvatar(Uri uri) {
         Bitmap avatar = BitmapUtils.toBitmap(uri);
         mAvatar.setImageBitmap(avatar);
-
-        HttpUtils.uploadFileToQiniu(BitmapUtils.toBytes(avatar), "avatar_" + mUser.getId() + "_" + System.currentTimeMillis() + ".jpg", new UpCompletionHandler() {
-            @Override
-            public void complete(final String key, ResponseInfo info, JSONObject response) {
-                if (info.isOK()) {
-                    String param = "token=" + mUser.getToken() + "&avatar=http://" + FilePathConfig.QINIU_URL + key;
-                    HttpUtils.sendHttpRequest(ApiConfig.MODIFY_AVATAR, param, new HttpUtils.Callback() {
-                        @Override
-                        public void onResponse(HttpUtils.Response response) {
-                            if (response.isSuccess()) {
-                                showMessage("上传头像成功", Toast.LENGTH_SHORT);
-                                mUser.setAvatarUrlString(FilePathConfig.QINIU_URL + key);
-                            } else showMessage(response.message());
-                        }
-
-                        @Override
-                        public void onFail(Exception e) {
-                            showMessage(e.toString());
-                        }
-                    });
-                }
-            }
-        });
+        String name = System.currentTimeMillis() + "";
+        String param = "token=" + mUser.getToken() + "&avatar=" + FilePathConfig.QINIU_URL + name;
+        HttpUtils.uploadImage(BitmapUtils.toBytes(avatar), name, param, ApiConfig.MODIFY_AVATAR);
     }
 
     @Override
@@ -237,10 +204,7 @@ public class QuestionListActivity extends BaseActivity {
         if (resultCode == RESULT_OK)
             switch (requestCode) {
                 case OPEN_ALBUM:
-                    File file = new File(getExternalCacheDir(), "avatar");
-                    if (!file.exists())
-                        file.mkdir();
-                    cropImage(BitmapUtils.parseImageUriString(data), "file://" + file.getPath() + "/" + mUser.getId());
+                    cropImage(BitmapUtils.parseImageUriString(data), "file://" + getExternalCacheDir() + "/" + System.currentTimeMillis());
                     break;
                 case CROP_IMAGE:
                     upLoadAvatar(data.getData());
