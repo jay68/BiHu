@@ -14,6 +14,7 @@ import com.jay.bihu.activity.AnswerListActivity;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
+import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.DateUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.view.CircleImageView;
@@ -98,6 +99,22 @@ public class QuestionViewHolder extends RecyclerView.ViewHolder implements View.
         mNaiveButton.setBackgroundResource(question.isNaive() ? R.drawable.ic_thumb_down_pink_24dp : R.drawable.ic_thumb_down_gray_24dp);
         mExcitingButton.setBackgroundResource(question.isExciting() ? R.drawable.ic_thumb_up_pink_24dp : R.drawable.ic_thumb_up_gray_24dp);
         mFavoriteButton.setBackgroundResource(question.isFavorite() ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_gray_24dp);
+
+        if (question.getAuthorAvatarUrlString().equals("null"))
+            mAvatar.setImageResource(R.mipmap.default_avatar);
+        else
+            HttpUtils.loadImage(question.getAuthorAvatarUrlString(), new HttpUtils.Callback() {
+                @Override
+                public void onResponse(HttpUtils.Response response) {
+                    if (response.isSuccess())
+                        mAvatar.setImageBitmap(BitmapUtils.toBitmap(response.bodyBytes()));
+                }
+
+                @Override
+                public void onFail(Exception e) {
+
+                }
+            });
     }
 
     public void addOnClickListener() {

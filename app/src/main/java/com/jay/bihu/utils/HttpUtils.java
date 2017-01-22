@@ -35,7 +35,7 @@ public class HttpUtils {
     }
 
     public static void loadImage(String address, Callback callback) {
-        String name = address.replace(FilePathConfig.QINIU_URL, "");
+        String name = address.substring(address.lastIndexOf('/') + 1);
         File file = new File(MyApplication.getContext().getExternalCacheDir(), name);
         if (file.exists()) {
             //文件存在则在文件中读取
@@ -143,7 +143,7 @@ public class HttpUtils {
 
                         if (connection.getRequestMethod().equals("GET")) {
                             //缓存图片
-                            String name = address.replace(FilePathConfig.QINIU_URL, "");
+                            String name = address.substring(address.lastIndexOf('/') + 1);
                             File file = new File(MyApplication.getContext().getExternalCacheDir(), name);
                             FileOutputStream os = new FileOutputStream(file);
                             os.write(temp);

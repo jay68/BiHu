@@ -60,7 +60,6 @@ public class AnswerActivity extends BaseActivity {
                 commit();
                 break;
             case R.id.add_image:
-//                addImage();
                 break;
         }
         return true;

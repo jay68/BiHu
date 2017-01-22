@@ -90,7 +90,6 @@ public class QuestionActivity extends BaseActivity {
                 commit();
                 break;
             case R.id.add_image:
-                checkAndOpenAlbum();
                 break;
         }
         return true;

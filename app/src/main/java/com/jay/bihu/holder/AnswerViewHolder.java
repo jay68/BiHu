@@ -3,7 +3,6 @@ package com.jay.bihu.holder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jay.bihu.R;
@@ -11,6 +10,7 @@ import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.Answer;
 import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
+import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.DateUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.view.CircleImageView;
@@ -77,6 +77,22 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
         mNaiveButton.setBackgroundResource(answer.isNaive() ? R.drawable.ic_thumb_down_pink_24dp : R.drawable.ic_thumb_down_gray_24dp);
         mExcitingButton.setBackgroundResource(answer.isExciting() ? R.drawable.ic_thumb_up_pink_24dp : R.drawable.ic_thumb_up_gray_24dp);
         mAcceptButton.setBackgroundResource(answer.isBest() ? R.drawable.ic_accept_pink_24dp : R.drawable.ic_accept_gray_24dp);
+
+        if (answer.getAuthorAvatarUrlString().equals("null"))
+            mAvatar.setImageResource(R.mipmap.default_avatar);
+        else
+            HttpUtils.loadImage(answer.getAuthorAvatarUrlString(), new HttpUtils.Callback() {
+                @Override
+                public void onResponse(HttpUtils.Response response) {
+                    if (response.isSuccess())
+                        mAvatar.setImageBitmap(BitmapUtils.toBitmap(response.bodyBytes()));
+                }
+
+                @Override
+                public void onFail(Exception e) {
+
+                }
+            });
     }
 
     public void addOnclickListeners() {

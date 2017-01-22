@@ -3,6 +3,7 @@ package com.jay.bihu.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -41,7 +42,7 @@ public class CircleImageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         Drawable drawable = getDrawable();
-        if (null != drawable) {
+        if (drawable != null) {
             Bitmap rawBitmap = ((BitmapDrawable) drawable).getBitmap();
 
             Bitmap newBitmap = scaleBitmap(rawBitmap);
