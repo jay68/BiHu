@@ -3,7 +3,6 @@ package com.jay.bihu.utils;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.jay.bihu.config.FilePathConfig;
 import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
@@ -21,6 +20,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import cn.bmob.v3.AsyncCustomEndpoints;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CloudCodeListener;
 
 /**
  * Created by Jay on 2017/1/12.
@@ -65,9 +68,21 @@ public class HttpUtils {
         }
     }
 
-    public static void uploadImage(byte[] data, String name, final String param, final String address) {
+    public static void uploadImage(final byte[] data, final String name, final String param, final String address) {
+        AsyncCustomEndpoints cloudCode = new AsyncCustomEndpoints();
+        cloudCode.callEndpoint("getToken", new CloudCodeListener() {
+            @Override
+            public void done(Object o, BmobException e) {
+                if (e == null) {
+                    upload(data, name, param, address, o.toString());
+                } else
+                    Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private static void upload(byte[] data, String name, final String param, final String address, String token) {
         Configuration config = new Configuration.Builder().zone(Zone.zone2).build();
-        String token = "IyrjaIn4lQlsS2o4rYdZJNoMpbpPcx0AzBM_HdJK:xjLuiX--0Shgm3xn8OlpMsj2hwU=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjoxNDg1NDUzNTc3fQ==";
         UploadManager uploadManager = new UploadManager(config);
         uploadManager.put(data, name, token, new UpCompletionHandler() {
             @Override
@@ -170,7 +185,7 @@ public class HttpUtils {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] temp = new byte[1024];
         int len;
-        while ((len=is.read(temp)) != -1)
+        while ((len = is.read(temp)) != -1)
             outputStream.write(temp, 0, len);
         is.close();
         return outputStream.toByteArray();
