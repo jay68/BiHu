@@ -80,7 +80,7 @@ public class QuestionListActivity extends BaseActivity {
         if (mLoading)
             return;
         mLoading = true;
-        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
+        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 mLoading = false;
@@ -105,7 +105,7 @@ public class QuestionListActivity extends BaseActivity {
         mQuestionRv.setLayoutManager(layoutManager);
 
         mLoading = true;
-        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0&count=20" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
+        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 mLoading = false;

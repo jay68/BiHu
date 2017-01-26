@@ -64,8 +64,6 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 150);
-        intent.putExtra("outputY", 150);
         intent.putExtra("return-data", false);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(outputUriString));
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
