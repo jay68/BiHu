@@ -169,8 +169,9 @@ public class HttpUtils {
     private static byte[] read(InputStream is) throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] temp = new byte[1024];
-        while (is.read(temp) != -1)
-            outputStream.write(temp);
+        int len;
+        while ((len=is.read(temp)) != -1)
+            outputStream.write(temp, 0, len);
         is.close();
         return outputStream.toByteArray();
     }
