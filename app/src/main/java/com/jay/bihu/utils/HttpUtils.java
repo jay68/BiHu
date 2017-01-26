@@ -67,7 +67,7 @@ public class HttpUtils {
 
     public static void uploadImage(byte[] data, String name, final String param, final String address) {
         Configuration config = new Configuration.Builder().zone(Zone.zone2).build();
-        String token = "IyrjaIn4lQlsS2o4rYdZJNoMpbpPcx0AzBM_HdJK:baCSFDqdKAEzMO4jb9XhQT3ttuw=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjoxNDg1MTA4MDM3fQ==";
+        String token = "IyrjaIn4lQlsS2o4rYdZJNoMpbpPcx0AzBM_HdJK:xjLuiX--0Shgm3xn8OlpMsj2hwU=:eyJzY29wZSI6ImltYWdlcyIsImRlYWRsaW5lIjoxNDg1NDUzNTc3fQ==";
         UploadManager uploadManager = new UploadManager(config);
         uploadManager.put(data, name, token, new UpCompletionHandler() {
             @Override

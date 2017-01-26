@@ -51,7 +51,7 @@ public class FavoriteListActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mFavoriteRv.setLayoutManager(layoutManager);
 
-        HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0&count=20", new HttpUtils.Callback() {
+        HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0", new HttpUtils.Callback() {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
@@ -72,7 +72,7 @@ public class FavoriteListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0&count=20", new HttpUtils.Callback() {
+                HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0", new HttpUtils.Callback() {
                     @Override
                     public void onResponse(HttpUtils.Response response) {
                         mRefreshLayout.setRefreshing(false);
