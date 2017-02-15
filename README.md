@@ -1,10 +1,8 @@
 <h1>逼乎<h1>
-<hr/>
 <img src="readmeFile/logo.png">
 <p>重庆邮电大学红岩移动开发部Android学员2017年寒假考核作业</p>
 
 <h2>应用简介</h2>
-<hr/>
 <p>
 这是重庆邮电大学红岩移动开发部Android学员2017寒假考核作业lv3<br/>
 实现了API里的所有功能，具体功能：<a href="https://github.com/haruue/bihu_web/blob/master/api.md" target="_blank">click me</a>
@@ -59,7 +57,6 @@
 </ul>
 
 <h2>APP下载</h2>
-<hr/>
 <ul>
 	<li><a href="https://raw.githubusercontent.com/l1432562823/BiHu/master/app/app-release.apk">点击下载</a></li>
 </ul>
