@@ -60,12 +60,6 @@ public class QuestionListActivity extends BaseActivity {
         setUpRefreshLayout();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        uploadData();
-    }
-
     private void setUpRefreshLayout() {
         mRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
