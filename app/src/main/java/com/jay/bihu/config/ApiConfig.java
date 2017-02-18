@@ -24,4 +24,5 @@ public class ApiConfig {
     public static final String CANCEL_FAVORITE = "https://api.caoyue.com.cn/bihu/cancelFavorite.php";
     public static final String FAVORITE = "https://api.caoyue.com.cn/bihu/favorite.php";
     public static final String CHANGE_PASSWORD = "https://api.caoyue.com.cn/bihu/changePassword.php";
+    public static final String GET_TOKEN = "http://www.jay-li.cn/qiniu/getToken.php";
 }

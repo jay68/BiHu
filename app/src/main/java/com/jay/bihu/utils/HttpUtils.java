@@ -3,6 +3,7 @@ package com.jay.bihu.utils;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.jay.bihu.config.ApiConfig;
 import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
@@ -21,22 +22,12 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import cn.bmob.v3.AsyncCustomEndpoints;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.CloudCodeListener;
-
 /**
  * Created by Jay on 2017/1/12.
  * 网络请求工具类
  */
 
 public class HttpUtils {
-    public interface Callback {
-        void onResponse(Response response);
-
-        void onFail(Exception e);
-    }
-
     public static void loadImage(String address, Callback callback) {
         String name = address.substring(address.lastIndexOf('/') + 1);
         File file = new File(MyApplication.getContext().getExternalCacheDir(), name);
@@ -69,14 +60,15 @@ public class HttpUtils {
     }
 
     public static void uploadImage(final byte[] data, final String name, final String param, final String address) {
-        AsyncCustomEndpoints cloudCode = new AsyncCustomEndpoints();
-        cloudCode.callEndpoint("getToken", new CloudCodeListener() {
+        sendHttpRequest(ApiConfig.GET_TOKEN, null, new Callback() {
             @Override
-            public void done(Object o, BmobException e) {
-                if (e == null) {
-                    upload(data, name, param, address, o.toString());
-                } else
-                    Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+            public void onResponse(Response response) {
+                upload(data, name, param, address, response.bodyString());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -117,7 +109,7 @@ public class HttpUtils {
 
             @Override
             public void onFail(Exception e) {
-
+                Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -189,6 +181,12 @@ public class HttpUtils {
             outputStream.write(temp, 0, len);
         is.close();
         return outputStream.toByteArray();
+    }
+
+    public interface Callback {
+        void onResponse(Response response);
+
+        void onFail(Exception e);
     }
 
     public static class Response {

@@ -13,8 +13,6 @@ import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.view.LoginDialog;
 
-import cn.bmob.v3.Bmob;
-
 public class LoginActivity extends BaseActivity {
     private LoginDialog mDialog;
 
@@ -113,8 +111,6 @@ public class LoginActivity extends BaseActivity {
                 mEditor.putString("password", password);
                 mEditor.putBoolean("isLogin", true);
                 mEditor.apply();
-
-                Bmob.initialize(this, "636b97aefa4cedadf92666ebb8c896bf");
 
                 Bundle data = new Bundle();
                 data.putString("data", response.bodyString());
