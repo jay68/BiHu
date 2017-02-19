@@ -1,7 +1,6 @@
 package com.jay.bihu.utils;
 
 import android.os.Handler;
-import android.widget.Toast;
 
 import com.jay.bihu.config.ApiConfig;
 import com.qiniu.android.common.Zone;
@@ -68,7 +67,7 @@ public class HttpUtils {
 
             @Override
             public void onFail(Exception e) {
-                Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                ToastUtils.showError(e.toString());
             }
         });
     }
@@ -84,18 +83,18 @@ public class HttpUtils {
                         @Override
                         public void onResponse(Response response) {
                             if (response.isSuccess())
-                                Toast.makeText(MyApplication.getContext(), "上传图片成功", Toast.LENGTH_SHORT).show();
+                                ToastUtils.showHint("上传图片成功");
                             else
-                                Toast.makeText(MyApplication.getContext(), response.message(), Toast.LENGTH_LONG).show();
+                                ToastUtils.showError(response.message());
                         }
 
                         @Override
                         public void onFail(Exception e) {
-                            Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                            ToastUtils.showError(e.toString());
                         }
                     });
                 } else
-                    Toast.makeText(MyApplication.getContext(), info.error, Toast.LENGTH_LONG).show();
+                    ToastUtils.showError(info.error);
             }
         }, null);
     }
@@ -109,7 +108,7 @@ public class HttpUtils {
 
             @Override
             public void onFail(Exception e) {
-                Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                ToastUtils.showError(e.toString());
             }
         });
     }

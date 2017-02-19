@@ -14,6 +14,7 @@ import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
+import com.jay.bihu.utils.ToastUtils;
 
 public class FavoriteListActivity extends BaseActivity {
     private User mUser;
@@ -70,13 +71,13 @@ public class FavoriteListActivity extends BaseActivity {
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
                             mFavoriteListRvAdapter.refreshFavoriteList(JsonParser.getQuestionList(response.bodyString()));
-                        else showMessage(response.message());
+                        else ToastUtils.showError(response.message());
                     }
 
                     @Override
                     public void onFail(Exception e) {
                         mLoading = false;
-                        showMessage(e.toString());
+                        ToastUtils.showError(e.toString());
                         mRefreshLayout.setRefreshing(false);
                     }
                 });

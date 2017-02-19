@@ -1,17 +1,17 @@
 package com.jay.bihu.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
+import com.jay.bihu.utils.ToastUtils;
 
 public class AnswerActivity extends BaseActivity {
     private String mToken;
@@ -59,8 +59,6 @@ public class AnswerActivity extends BaseActivity {
             case R.id.commit:
                 commit();
                 break;
-            case R.id.add_image:
-                break;
         }
         return true;
     }
@@ -70,7 +68,7 @@ public class AnswerActivity extends BaseActivity {
             return;
         String content = mEditText.getText().toString();
         if (content.equals("")) {
-            showMessage("内容不能为空");
+            ToastUtils.showHint("内容不能为空");
             return;
         }
         isCommitting = true;
@@ -79,17 +77,16 @@ public class AnswerActivity extends BaseActivity {
             @Override
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
-                    showMessage("已提交", Toast.LENGTH_SHORT);
+                    ToastUtils.showHint("已提交");
                     finish();
-                }
-                else showMessage(response.message());
+                } else ToastUtils.showError(response.message());
                 isCommitting = false;
             }
 
             @Override
             public void onFail(Exception e) {
                 isCommitting = false;
-                showMessage(e.toString());
+                ToastUtils.showError(e.toString());
             }
         });
     }

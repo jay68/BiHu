@@ -6,11 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
+import com.jay.bihu.utils.ToastUtils;
 import com.jay.bihu.view.LoginDialog;
 
 public class LoginActivity extends BaseActivity {
@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFail(Exception e) {
                 e.printStackTrace();
-                showMessage(e.toString());
+                ToastUtils.showError(e.toString());
                 progressDialog.dismiss();
             }
         });
@@ -104,7 +104,7 @@ public class LoginActivity extends BaseActivity {
         switch (statusCode) {
             case 200:
                 mDialog.dismiss();
-                showMessage("欢迎来到逼乎社区", Toast.LENGTH_SHORT);
+                ToastUtils.showHint("欢迎来到逼乎社区");
                 String username = mDialog.getUsernameWrapper().getEditText().getText().toString();
                 String password = mDialog.getPasswordWrapper().getEditText().getText().toString();
                 mEditor.putString("username", username);
@@ -120,11 +120,8 @@ public class LoginActivity extends BaseActivity {
             case 400:
                 mDialog.getPasswordWrapper().setError(response.getInfo());
                 break;
-            case 401:
-                showMessage(response.message());
-                break;
-            case 500:
-                showMessage(response.message());
+            default:
+                ToastUtils.showError(response.message());
                 break;
         }
     }

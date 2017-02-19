@@ -12,11 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-
-import com.jay.bihu.utils.ActivityCollector;
-
-import java.io.File;
 
 public class BaseActivity extends AppCompatActivity {
     protected static final int OPEN_ALBUM = 0;
@@ -28,14 +23,12 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityCollector.addActivity(this.getLocalClassName().replace("activity.", ""), this);
         mHandler = new Handler();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActivityCollector.removeActivity(this.getLocalClassName().replace("activity.", ""));
     }
 
     @Override
@@ -68,14 +61,6 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(outputUriString));
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, CROP_IMAGE);
-    }
-
-    public void showMessage(String message, int length) {
-        Toast.makeText(this, message, length).show();
-    }
-
-    public void showMessage(String message) {
-        showMessage(message, Toast.LENGTH_LONG);
     }
 
     public void activityStart(Class<?> cls, Bundle data) {

@@ -3,7 +3,6 @@ package com.jay.bihu.holder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.AnswerListRvAdapter;
@@ -11,7 +10,7 @@ import com.jay.bihu.adapter.FavoriteListRvAdapter;
 import com.jay.bihu.adapter.QuestionListRvAdapter;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
-import com.jay.bihu.utils.MyApplication;
+import com.jay.bihu.utils.ToastUtils;
 
 public class TailViewHolder extends RecyclerView.ViewHolder {
     public static final int TYPE_QUESTION = 0;
@@ -53,12 +52,12 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
                     if (type == TYPE_QUESTION)
                         ((QuestionListRvAdapter) adapter).addQuestion(JsonParser.getQuestionList(response.bodyString()));
                     else if (type == TYPE_ANSWER)
-                        ((AnswerListRvAdapter)adapter).addAnswer(JsonParser.getAnswerList(response.bodyString()));
+                        ((AnswerListRvAdapter) adapter).addAnswer(JsonParser.getAnswerList(response.bodyString()));
                     else if (type == TYPE_FAVORITE)
-                        ((FavoriteListRvAdapter)adapter).addFavorite(JsonParser.getQuestionList(response.bodyString()));
+                        ((FavoriteListRvAdapter) adapter).addFavorite(JsonParser.getQuestionList(response.bodyString()));
 
                 } else {
-                    Toast.makeText(MyApplication.getContext(), response.message(), Toast.LENGTH_LONG).show();
+                    ToastUtils.showError(response.message());
                     mLoadTextView.setText("加载失败");
                 }
             }
@@ -66,7 +65,7 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onFail(Exception e) {
                 loading = false;
-                Toast.makeText(MyApplication.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                ToastUtils.showError(e.toString());
                 mLoadTextView.setText("加载失败");
             }
         });

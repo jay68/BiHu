@@ -18,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionListRvAdapter;
@@ -27,6 +26,7 @@ import com.jay.bihu.data.User;
 import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
+import com.jay.bihu.utils.ToastUtils;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
 
@@ -80,12 +80,12 @@ public class QuestionListActivity extends BaseActivity {
                 mRefreshLayout.setRefreshing(false);
                 if (response.isSuccess())
                     mQuestionListRvAdapter.refreshQuestionList(JsonParser.getQuestionList(response.bodyString()));
-                else showMessage(response.message());
+                else ToastUtils.showError(response.message());
             }
 
             @Override
             public void onFail(Exception e) {
-                showMessage(e.toString());
+                ToastUtils.showError(e.toString());
                 mRefreshLayout.setRefreshing(false);
                 mLoading = false;
             }
@@ -152,12 +152,12 @@ public class QuestionListActivity extends BaseActivity {
                 public void onResponse(HttpUtils.Response response) {
                     if (response.isSuccess())
                         mAvatar.setImageBitmap(BitmapUtils.toBitmap(response.bodyBytes()));
-                    else showMessage(response.message());
+                    else ToastUtils.showError(response.message());
                 }
 
                 @Override
                 public void onFail(Exception e) {
-                    showMessage(e.toString());
+                    ToastUtils.showError(e.toString());
                 }
             });
     }
@@ -208,18 +208,18 @@ public class QuestionListActivity extends BaseActivity {
                     public void onResponse(HttpUtils.Response response) {
                         if (response.isSuccess()) {
                             dialog.dismiss();
-                            showMessage(response.getInfo(), Toast.LENGTH_SHORT);
+                            ToastUtils.showHint(response.getInfo());
                             SharedPreferences preferences = getSharedPreferences("account", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("password", password);
                             editor.apply();
                             mUser.setToken(JsonParser.getElement(response.bodyString(), "token"));
-                        } else showMessage(response.message());
+                        } else ToastUtils.showError(response.message());
                     }
 
                     @Override
                     public void onFail(Exception e) {
-                        showMessage(e.toString());
+                        ToastUtils.showError(e.toString());
                     }
                 });
             }

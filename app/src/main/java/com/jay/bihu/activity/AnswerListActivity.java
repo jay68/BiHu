@@ -1,8 +1,8 @@
 package com.jay.bihu.activity;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +15,7 @@ import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
+import com.jay.bihu.utils.ToastUtils;
 
 public class AnswerListActivity extends BaseActivity {
     private Question mQuestion;
@@ -67,13 +68,13 @@ public class AnswerListActivity extends BaseActivity {
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
                             mAnswerListRvAdapter.refreshAnswerList(JsonParser.getAnswerList(response.bodyString()));
-                        else showMessage(response.message());
+                        else ToastUtils.showError(response.message());
                     }
 
                     @Override
                     public void onFail(Exception e) {
                         mLoading = false;
-                        showMessage(e.toString());
+                        ToastUtils.showError(e.toString());
                         mRefreshLayout.setRefreshing(false);
                     }
                 });
