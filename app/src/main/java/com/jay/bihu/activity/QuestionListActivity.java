@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.jay.bihu.R;
 import com.jay.bihu.adapter.QuestionListRvAdapter;
 import com.jay.bihu.config.ApiConfig;
-import com.jay.bihu.config.FilePathConfig;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
@@ -97,24 +96,8 @@ public class QuestionListActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mQuestionRv.setLayoutManager(layoutManager);
-
-        mLoading = true;
-        HttpUtils.sendHttpRequest(ApiConfig.QUESTION_LIST, "page=0" + "&token=" + mUser.getToken(), new HttpUtils.Callback() {
-            @Override
-            public void onResponse(HttpUtils.Response response) {
-                mLoading = false;
-                if (response.isSuccess()) {
-                    mQuestionListRvAdapter = new QuestionListRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
-                    mQuestionRv.setAdapter(mQuestionListRvAdapter);
-                } else showMessage(response.message());
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                showMessage(e.toString());
-                mLoading = false;
-            }
-        });
+        mQuestionListRvAdapter = new QuestionListRvAdapter(mUser);
+        mQuestionRv.setAdapter(mQuestionListRvAdapter);
     }
 
     private void setUpNavigationView() {
@@ -183,7 +166,7 @@ public class QuestionListActivity extends BaseActivity {
         Bitmap avatar = BitmapUtils.toBitmap(uri);
         mAvatar.setImageBitmap(avatar);
         String name = System.currentTimeMillis() + "";
-        String param = "token=" + mUser.getToken() + "&avatar=" + FilePathConfig.QINIU_URL + name;
+        String param = "token=" + mUser.getToken() + "&avatar=" + ApiConfig.QINIU_URL + name;
         HttpUtils.uploadImage(BitmapUtils.toBytes(avatar), name, param, ApiConfig.MODIFY_AVATAR);
     }
 

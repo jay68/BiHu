@@ -23,9 +23,9 @@ public class QuestionListRvAdapter extends RecyclerView.Adapter {
     private ArrayList<Question> mQuestionList;
     private User mUser;
 
-    public QuestionListRvAdapter(User user, ArrayList<Question> questionList) {
+    public QuestionListRvAdapter(User user) {
         mUser = user;
-        mQuestionList = questionList;
+        mQuestionList = new ArrayList<>();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class QuestionListRvAdapter extends RecyclerView.Adapter {
                 tailViewHolder.getLoadTextView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String param = "page=" + mQuestionList.size() / 20 + "&token=" + mUser.getToken();
+                        String param = "page=" + mQuestionList.size() / 10 + "&token=" + mUser.getToken();
                         tailViewHolder.load(ApiConfig.QUESTION_LIST, param, QuestionListRvAdapter.this, TailViewHolder.TYPE_QUESTION);
                     }
                 });
@@ -63,7 +63,7 @@ public class QuestionListRvAdapter extends RecyclerView.Adapter {
                 questionViewHolder.update(mQuestionList.get(position));
                 break;
             case TYPE_TAIL:
-                String param = "page=" + mQuestionList.size() / 20 + "&token=" + mUser.getToken();
+                String param = "page=" + mQuestionList.size() / 10 + "&token=" + mUser.getToken();
                 ((TailViewHolder) holder).load(ApiConfig.QUESTION_LIST, param, this, TailViewHolder.TYPE_QUESTION);
                 break;
         }

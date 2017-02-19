@@ -24,6 +24,8 @@ public class AnswerListActivity extends BaseActivity {
     private RecyclerView mAnswerRv;
     private AnswerListRvAdapter mAnswerListRvAdapter;
 
+    private boolean mLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +57,13 @@ public class AnswerListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (mLoading)
+                    return;
+                mLoading = true;
                 HttpUtils.sendHttpRequest(ApiConfig.ANSWER_LIST, "qid=" + mQuestion.getId() + "&page=0&token=" + mUser.getToken(), new HttpUtils.Callback() {
                     @Override
                     public void onResponse(HttpUtils.Response response) {
+                        mLoading = false;
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
                             mAnswerListRvAdapter.refreshAnswerList(JsonParser.getAnswerList(response.bodyString()));
@@ -66,6 +72,7 @@ public class AnswerListActivity extends BaseActivity {
 
                     @Override
                     public void onFail(Exception e) {
+                        mLoading = false;
                         showMessage(e.toString());
                         mRefreshLayout.setRefreshing(false);
                     }
@@ -78,21 +85,8 @@ public class AnswerListActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mAnswerRv.setLayoutManager(layoutManager);
-
-        HttpUtils.sendHttpRequest(ApiConfig.ANSWER_LIST, "qid=" + mQuestion.getId() + "&page=0&token=" + mUser.getToken(), new HttpUtils.Callback() {
-            @Override
-            public void onResponse(HttpUtils.Response response) {
-                if (response.isSuccess()) {
-                    mAnswerListRvAdapter = new AnswerListRvAdapter(mUser, mQuestion, JsonParser.getAnswerList(response.bodyString()));
-                    mAnswerRv.setAdapter(mAnswerListRvAdapter);
-                } else showMessage(response.message());
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                showMessage(e.toString());
-            }
-        });
+        mAnswerListRvAdapter = new AnswerListRvAdapter(mUser, mQuestion);
+        mAnswerRv.setAdapter(mAnswerListRvAdapter);
     }
 
     @Override

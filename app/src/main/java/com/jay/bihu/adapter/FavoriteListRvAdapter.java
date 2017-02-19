@@ -23,9 +23,9 @@ public class FavoriteListRvAdapter extends RecyclerView.Adapter {
     private ArrayList<Question> mFavoriteList;
     private User mUser;
 
-    public FavoriteListRvAdapter(User user, ArrayList<Question> favoriteList) {
+    public FavoriteListRvAdapter(User user) {
         mUser = user;
-        mFavoriteList = favoriteList;
+        mFavoriteList = new ArrayList<>();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FavoriteListRvAdapter extends RecyclerView.Adapter {
                 tailViewHolder.getLoadTextView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String param = "page=" + mFavoriteList.size() / 20 + "&token=" + mUser.getToken();
+                        String param = "page=" + mFavoriteList.size() / 10 + "&token=" + mUser.getToken();
                         tailViewHolder.load(ApiConfig.FAVORITE_LIST, param, FavoriteListRvAdapter.this, TailViewHolder.TYPE_FAVORITE);
                     }
                 });
@@ -63,7 +63,7 @@ public class FavoriteListRvAdapter extends RecyclerView.Adapter {
                 questionViewHolder.update(mFavoriteList.get(position));
                 break;
             case TYPE_TAIL:
-                String param = "page=" + mFavoriteList.size() / 20 + "&token=" + mUser.getToken();
+                String param = "page=" + mFavoriteList.size() / 10 + "&token=" + mUser.getToken();
                 ((TailViewHolder) holder).load(ApiConfig.FAVORITE_LIST, param, this, TailViewHolder.TYPE_FAVORITE);
                 break;
         }

@@ -21,6 +21,7 @@ public class FavoriteListActivity extends BaseActivity {
     private RecyclerView mFavoriteRv;
     private SwipeRefreshLayout mRefreshLayout;
     private FavoriteListRvAdapter mFavoriteListRvAdapter;
+    private boolean mLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +51,8 @@ public class FavoriteListActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mFavoriteRv.setLayoutManager(layoutManager);
-
-        HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0", new HttpUtils.Callback() {
-            @Override
-            public void onResponse(HttpUtils.Response response) {
-                if (response.isSuccess()) {
-                    mFavoriteListRvAdapter = new FavoriteListRvAdapter(mUser, JsonParser.getQuestionList(response.bodyString()));
-                    mFavoriteRv.setAdapter(mFavoriteListRvAdapter);
-                } else showMessage(response.message());
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                showMessage(e.toString());
-            }
-        });
+        mFavoriteListRvAdapter = new FavoriteListRvAdapter(mUser);
+        mFavoriteRv.setAdapter(mFavoriteListRvAdapter);
     }
 
     private void setUpRefreshLayout() {
@@ -72,9 +60,13 @@ public class FavoriteListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (mLoading)
+                    return;
+                mLoading = true;
                 HttpUtils.sendHttpRequest(ApiConfig.FAVORITE_LIST, "token=" + mUser.getToken() + "&page=0", new HttpUtils.Callback() {
                     @Override
                     public void onResponse(HttpUtils.Response response) {
+                        mLoading = false;
                         mRefreshLayout.setRefreshing(false);
                         if (response.isSuccess())
                             mFavoriteListRvAdapter.refreshFavoriteList(JsonParser.getQuestionList(response.bodyString()));
@@ -83,6 +75,7 @@ public class FavoriteListActivity extends BaseActivity {
 
                     @Override
                     public void onFail(Exception e) {
+                        mLoading = false;
                         showMessage(e.toString());
                         mRefreshLayout.setRefreshing(false);
                     }

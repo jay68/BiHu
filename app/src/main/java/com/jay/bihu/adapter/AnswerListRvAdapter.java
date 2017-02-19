@@ -27,9 +27,9 @@ public class AnswerListRvAdapter extends RecyclerView.Adapter {
     private ArrayList<Answer> mAnswerList;
     private User mUser;
 
-    public AnswerListRvAdapter(User user, Question question, ArrayList<Answer> answerList) {
+    public AnswerListRvAdapter(User user, Question question) {
         mUser = user;
-        mAnswerList = answerList;
+        mAnswerList = new ArrayList<>();
         mQuestion = question;
         sort();
     }
@@ -64,7 +64,7 @@ public class AnswerListRvAdapter extends RecyclerView.Adapter {
                 tailViewHolder.getLoadTextView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String param = "page=" + mAnswerList.size() / 20 + "&qid=" + mQuestion.getId() + "&token=" + mUser.getToken();
+                        String param = "page=" + mAnswerList.size() / 10 + "&qid=" + mQuestion.getId() + "&token=" + mUser.getToken();
                         tailViewHolder.load(ApiConfig.ANSWER_LIST, param, AnswerListRvAdapter.this, TailViewHolder.TYPE_ANSWER);
                     }
                 });
@@ -85,7 +85,7 @@ public class AnswerListRvAdapter extends RecyclerView.Adapter {
                 answerViewHolder.update(mAnswerList.get(position - 1), mQuestion);
                 break;
             case TYPE_TAIL:
-                String param = "page=" + mAnswerList.size() / 20 + "&qid=" + mQuestion.getId() + "&token=" + mUser.getToken();
+                String param = "page=" + mAnswerList.size() / 10 + "&qid=" + mQuestion.getId() + "&token=" + mUser.getToken();
                 ((TailViewHolder) holder).load(ApiConfig.ANSWER_LIST, param, this, TailViewHolder.TYPE_ANSWER);
                 break;
         }

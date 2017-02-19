@@ -32,7 +32,7 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void load(String address, String param, final RecyclerView.Adapter adapter, final int type) {
-        if (adapter.getItemCount() == 1 || (adapter.getItemCount() - 1) % 10 != 0) {
+        if (adapter.getItemCount() != 1 && (adapter.getItemCount() - 1) % 10 != 0) {
             mLoadTextView.setText("没有更多了");
             return;
         }
