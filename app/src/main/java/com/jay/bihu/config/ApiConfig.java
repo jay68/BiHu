@@ -25,5 +25,5 @@ public class ApiConfig {
     public static final String FAVORITE = "https://api.caoyue.com.cn/bihu/favorite.php";
     public static final String CHANGE_PASSWORD = "https://api.caoyue.com.cn/bihu/changePassword.php";
     public static final String GET_TOKEN = "http://www.jay-li.cn/qiniu/getToken.php";
-    public static final String QINIU_URL = "http://ok4qp4ux0.bkt.clouddn.com/";   //使用时在其后拼接文件名
+    public static final String QINIU_URL = "http://api.jay-li.cn/qiniu/getToken.php";   //使用时在其后拼接文件名
 }

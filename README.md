@@ -6,7 +6,7 @@
 <p>
 这是重庆邮电大学红岩移动开发部Android学员2017寒假考核作业lv4，实现功能如下：
 	<ul>
-		<li>架设了腾讯云服务器，添加了生成七牛token的php接口（地址：<a href="http://jay-li.cn/qiniu/getToken.php">http://jay-li.cn/qiniu/getToken.php</a>）</li>
+		<li>架设了腾讯云服务器，添加了生成七牛token的php接口（地址：<a href="http://api.jay-li.cn/qiniu/getToken.php">http://api.jay-li.cn/qiniu/getToken.php</a>）</li>
 		<li>实现了API里的所有功能，具体功能及API：<a href="https://github.com/haruue/bihu_web/blob/master/api.md" target="_blank">click me</a></li>
 	</ul>
 </p>
