@@ -29,7 +29,7 @@ public class FavoriteListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_list);
 
-        mUser = getIntent().getBundleExtra("data").getParcelable("user");
+        mUser = getIntent().getParcelableExtra("user");
         mFavoriteRv = (RecyclerView) findViewById(R.id.favoriteRv);
         mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
 

@@ -26,7 +26,7 @@ public class QuestionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
-        mUser = getIntent().getBundleExtra("data").getParcelable("user");
+        mUser = getIntent().getParcelableExtra("user");
         mQuestionDetail = (EditText) findViewById(R.id.questionDetail);
         mQuestionTitle = (EditText) findViewById(R.id.questionTitle);
 

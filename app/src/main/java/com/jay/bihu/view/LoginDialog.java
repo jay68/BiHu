@@ -10,13 +10,7 @@ import android.widget.TextView;
 
 import com.jay.bihu.R;
 
-/**
- * Created by Jay on 2017/1/13.
- */
-
 public class LoginDialog extends Dialog {
-    private Context mContext;
-
     private TextView mMessageTextView;
     private Button mLoginButton;
     private Button mRegisterButton;
@@ -25,7 +19,6 @@ public class LoginDialog extends Dialog {
 
     public LoginDialog(Context context) {
         super(context);
-        mContext = context;
     }
 
     @Override
@@ -69,7 +62,7 @@ public class LoginDialog extends Dialog {
 
     public void setLoginButton(int id, View.OnClickListener listener) {
         setLoginButton(getContext().getString(id), listener);
-    }
+}
 
     public void setRegisterButton(String message, View.OnClickListener listener) {
         mRegisterButton.setVisibility(View.VISIBLE);

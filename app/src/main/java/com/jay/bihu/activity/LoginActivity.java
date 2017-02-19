@@ -2,6 +2,7 @@ package com.jay.bihu.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -112,10 +113,7 @@ public class LoginActivity extends BaseActivity {
                 mEditor.putBoolean("isLogin", true);
                 mEditor.apply();
 
-                Bundle data = new Bundle();
-                data.putString("data", response.bodyString());
-                activityStart(QuestionListActivity.class, data);
-                finish();
+                actionStart(response.bodyString());
                 break;
             case 400:
                 mDialog.getPasswordWrapper().setError(response.getInfo());
@@ -131,5 +129,12 @@ public class LoginActivity extends BaseActivity {
         if (event.getAction() == MotionEvent.ACTION_DOWN)
             mDialog.show();
         return super.onTouchEvent(event);
+    }
+
+    private void actionStart(String data) {
+        Intent intent = new Intent(this, QuestionListActivity.class);
+        intent.putExtra("data", data);
+        startActivity(intent);
+        finish();
     }
 }

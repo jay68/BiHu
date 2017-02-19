@@ -1,5 +1,6 @@
 package com.jay.bihu.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +48,7 @@ public class QuestionListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_list);
 
-        mUser = JsonParser.getUser(getIntent().getBundleExtra("data").getString("data"));
+        mUser = JsonParser.getUser(getIntent().getStringExtra("data"));
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.navigationView);
         mQuestionRv = (RecyclerView) findViewById(R.id.questionRv);
@@ -57,6 +58,12 @@ public class QuestionListActivity extends BaseActivity {
         setUpNavigationView();
         setUpQuestionRv();
         setUpRefreshLayout();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        uploadData();
     }
 
     private void setUpRefreshLayout() {
@@ -111,14 +118,10 @@ public class QuestionListActivity extends BaseActivity {
                         mQuestionRv.scrollToPosition(0);
                         break;
                     case R.id.question:
-                        Bundle data = new Bundle();
-                        data.putParcelable("user", mUser);
-                        activityStart(QuestionActivity.class, data);
+                        actionStart(QuestionActivity.class);
                         break;
                     case R.id.favorite:
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("user", mUser);
-                        activityStart(FavoriteListActivity.class, bundle);
+                        actionStart(FavoriteListActivity.class);
                         break;
                     case R.id.avatar:
                         checkAndOpenAlbum();
@@ -253,5 +256,11 @@ public class QuestionListActivity extends BaseActivity {
         if (item.getItemId() == android.R.id.home)
             mDrawerLayout.openDrawer(GravityCompat.START);
         return false;
+    }
+
+    private void actionStart(Class<? extends Activity> cls) {
+        Intent intent = new Intent(this, cls);
+        intent.putExtra("user", mUser);
+        startActivity(intent);
     }
 }

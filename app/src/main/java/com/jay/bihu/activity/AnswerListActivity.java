@@ -43,6 +43,12 @@ public class AnswerListActivity extends BaseActivity {
         setUpRefreshLayout();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        uploadData();
+    }
+
     private void setUpToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -58,26 +64,30 @@ public class AnswerListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (mLoading)
-                    return;
-                mLoading = true;
-                HttpUtils.sendHttpRequest(ApiConfig.ANSWER_LIST, "qid=" + mQuestion.getId() + "&page=0&token=" + mUser.getToken(), new HttpUtils.Callback() {
-                    @Override
-                    public void onResponse(HttpUtils.Response response) {
-                        mLoading = false;
-                        mRefreshLayout.setRefreshing(false);
-                        if (response.isSuccess())
-                            mAnswerListRvAdapter.refreshAnswerList(JsonParser.getAnswerList(response.bodyString()));
-                        else ToastUtils.showError(response.message());
-                    }
+                uploadData();
+            }
+        });
+    }
 
-                    @Override
-                    public void onFail(Exception e) {
-                        mLoading = false;
-                        ToastUtils.showError(e.toString());
-                        mRefreshLayout.setRefreshing(false);
-                    }
-                });
+    private void uploadData() {
+        if (mLoading)
+            return;
+        mLoading = true;
+        HttpUtils.sendHttpRequest(ApiConfig.ANSWER_LIST, "qid=" + mQuestion.getId() + "&page=0&token=" + mUser.getToken(), new HttpUtils.Callback() {
+            @Override
+            public void onResponse(HttpUtils.Response response) {
+                mLoading = false;
+                mRefreshLayout.setRefreshing(false);
+                if (response.isSuccess())
+                    mAnswerListRvAdapter.refreshAnswerList(JsonParser.getAnswerList(response.bodyString()));
+                else ToastUtils.showError(response.message());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                mLoading = false;
+                ToastUtils.showError(e.toString());
+                mRefreshLayout.setRefreshing(false);
             }
         });
     }

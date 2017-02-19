@@ -31,7 +31,10 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void load(String address, String param, final RecyclerView.Adapter adapter, final int type) {
-        if (adapter.getItemCount() != 1 && (adapter.getItemCount() - 1) % 10 != 0) {
+        int n = 1;  //Answer列表特殊处理
+        if (type == TYPE_ANSWER)
+            n = 2;
+        if ((adapter.getItemCount() - n) % 10 != 0) {
             mLoadTextView.setText("没有更多了");
             return;
         }
@@ -44,8 +47,9 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
             public void onResponse(HttpUtils.Response response) {
                 loading = false;
                 if (response.isSuccess()) {
-                    String questions = JsonParser.getElement(response.bodyString(), "questions");
-                    if (questions == null || questions.equals("null")) {
+                    String key = (type == TYPE_ANSWER ? "answers" : "questions");
+                    String data = JsonParser.getElement(response.bodyString(), key);
+                    if (data == null || data.equals("null")) {
                         mLoadTextView.setText("没有更多了");
                         return;
                     }

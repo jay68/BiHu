@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 public class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private CircleImageView mAvatar;
-    private ImageView mQuestionImage;
 
     private TextView mAuthorName;
     private TextView mDate;
@@ -47,7 +46,6 @@ public class QuestionViewHolder extends RecyclerView.ViewHolder implements View.
         setItemViewOnClickListener(itemView);
 
         mAvatar = (CircleImageView) itemView.findViewById(R.id.avatar);
-        mQuestionImage = (ImageView) itemView.findViewById(R.id.questionImage);
         mAuthorName = (TextView) itemView.findViewById(R.id.authorName);
         mDate = (TextView) itemView.findViewById(R.id.date);
         mRecentDate = (TextView) itemView.findViewById(R.id.recentDate);

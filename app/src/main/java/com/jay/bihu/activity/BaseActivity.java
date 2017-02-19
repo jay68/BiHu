@@ -62,11 +62,4 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         startActivityForResult(intent, CROP_IMAGE);
     }
-
-    public void activityStart(Class<?> cls, Bundle data) {
-        Intent intent = new Intent(this, cls);
-        if (data != null)
-            intent.putExtra("data", data);
-        startActivity(intent);
-    }
 }

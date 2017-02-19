@@ -116,7 +116,7 @@ public class AnswerListRvAdapter extends RecyclerView.Adapter {
                     return -1;
                 else if (o2.isBest())
                     return 1;
-                else return 0;
+                else return o2.getDate().compareTo(o1.getDate());
             }
         });
     }
