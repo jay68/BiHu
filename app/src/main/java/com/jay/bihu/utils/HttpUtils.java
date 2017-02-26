@@ -28,6 +28,8 @@ import java.net.URL;
 
 public class HttpUtils {
     public static void loadImage(String address, Callback callback) {
+        if (address.endsWith("/"))
+            address = address.substring(0, address.length() - 1);
         String name = address.substring(address.lastIndexOf('/') + 1);
         File file = new File(MyApplication.getContext().getExternalCacheDir(), name);
         if (file.exists()) {
