@@ -27,6 +27,7 @@ import com.jay.bihu.data.User;
 import com.jay.bihu.utils.BitmapUtils;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
+import com.jay.bihu.utils.RefreshChecker;
 import com.jay.bihu.utils.ToastUtils;
 import com.jay.bihu.view.CircleImageView;
 import com.jay.bihu.view.LoginDialog;
@@ -63,7 +64,11 @@ public class QuestionListActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        uploadData();
+        if (RefreshChecker.isQuestionNeedRefresh()) {
+            uploadData();
+            RefreshChecker.setQuestionNeedRefresh(false);
+            mQuestionRv.scrollToPosition(0);
+        }
     }
 
     private void setUpRefreshLayout() {

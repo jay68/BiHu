@@ -15,6 +15,7 @@ import com.jay.bihu.data.Question;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
 import com.jay.bihu.utils.JsonParser;
+import com.jay.bihu.utils.RefreshChecker;
 import com.jay.bihu.utils.ToastUtils;
 
 public class AnswerListActivity extends BaseActivity {
@@ -46,7 +47,11 @@ public class AnswerListActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        uploadData();
+        if (RefreshChecker.isAnswerNeedRefresh()) {
+            uploadData();
+            RefreshChecker.setAnswerNeedRefresh(false);
+            mAnswerRv.scrollToPosition(0);
+        }
     }
 
     private void setUpToolBar() {

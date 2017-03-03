@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.utils.HttpUtils;
+import com.jay.bihu.utils.RefreshChecker;
 import com.jay.bihu.utils.ToastUtils;
 
 public class AnswerActivity extends BaseActivity {
@@ -78,6 +79,7 @@ public class AnswerActivity extends BaseActivity {
             public void onResponse(HttpUtils.Response response) {
                 if (response.isSuccess()) {
                     ToastUtils.showHint("已提交");
+                    RefreshChecker.setAnswerNeedRefresh(true);
                     finish();
                 } else ToastUtils.showError(response.message());
                 isCommitting = false;

@@ -13,8 +13,6 @@ import com.jay.bihu.holder.QuestionViewHolder;
 import com.jay.bihu.holder.TailViewHolder;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class QuestionListRvAdapter extends RecyclerView.Adapter {
     private static final int TYPE_QUESTION = 0;

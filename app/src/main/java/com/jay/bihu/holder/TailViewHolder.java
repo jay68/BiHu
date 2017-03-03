@@ -49,7 +49,7 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
                 if (response.isSuccess()) {
                     String key = (type == TYPE_ANSWER ? "answers" : "questions");
                     String data = JsonParser.getElement(response.bodyString(), key);
-                    if (data == null || data.equals("null")) {
+                    if (data == null || data.equals("null") || data.equals("[]")) {
                         mLoadTextView.setText("没有更多了");
                         return;
                     }
@@ -59,7 +59,6 @@ public class TailViewHolder extends RecyclerView.ViewHolder {
                         ((AnswerListRvAdapter) adapter).addAnswer(JsonParser.getAnswerList(response.bodyString()));
                     else if (type == TYPE_FAVORITE)
                         ((FavoriteListRvAdapter) adapter).addFavorite(JsonParser.getQuestionList(response.bodyString()));
-
                 } else {
                     ToastUtils.showError(response.message());
                     mLoadTextView.setText("加载失败");

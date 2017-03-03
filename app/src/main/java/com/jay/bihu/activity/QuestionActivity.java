@@ -12,6 +12,7 @@ import com.jay.bihu.R;
 import com.jay.bihu.config.ApiConfig;
 import com.jay.bihu.data.User;
 import com.jay.bihu.utils.HttpUtils;
+import com.jay.bihu.utils.RefreshChecker;
 import com.jay.bihu.utils.ToastUtils;
 
 public class QuestionActivity extends BaseActivity {
@@ -89,6 +90,7 @@ public class QuestionActivity extends BaseActivity {
                 isCommitting = false;
                 if (response.isSuccess()) {
                     ToastUtils.showHint("已提交");
+                    RefreshChecker.setQuestionNeedRefresh(true);
                     finish();
                 } else ToastUtils.showError(response.message());
             }
