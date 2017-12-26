@@ -1,68 +1,42 @@
-<h1>逼乎<h1>
-<img src="readmeFile/logo.png">
-<p>重庆邮电大学红岩移动开发部Android学员2017年寒假考核作业</p>
+# 逼乎
+![](readmeFile/logo.png)<br>
+重庆邮电大学红岩移动开发部Android学员2017年寒假考核作业
 
-<h2>应用简介</h2>
-<p>
+## 应用简介
 这是重庆邮电大学红岩移动开发部Android学员2017寒假考核作业lv4，实现功能如下：
-	<ul>
-		<li>架设了腾讯云服务器，添加了生成七牛token的php接口（地址：<a href="http://api.jay-li.cn/qiniu/getToken.php">http://api.jay-li.cn/qiniu/getToken.php</a>）</li>
-		<li>实现了API里的所有功能，具体功能及API：<a href="https://github.com/haruue/bihu_web/blob/master/api.md" target="_blank">click me</a></li>
-	</ul>
-</p>
++ 架设了腾讯云服务器，添加了生成七牛token的php接口；
++ 实现了API里的所有功能。
 
-<h2>功能展示</h2>
-<ul>
-	<li>
-		<h3>登录、登出</h3>
-		<img src="readmeFile/登录.gif">
-	</li>
+## 功能展示
++ 登录、登出<br>
+![](readmeFile/登录.gif)
 
-	<li>
-		<h3>加载、刷新问题列表</h3>
-		<img src="readmeFile/主页.gif">
-	</li>
++ 加载、刷新问题列表<br>
+![](readmeFile/主页.gif)
 
-	<li>
-		<h3>exciting、naive、收藏</h3>
-		<img src="readmeFile/收藏.gif">
-	</li>
++ exciting、naive、收藏<br>
+![](readmeFile/收藏.gif)
 
-	<li>
-		<h3>回答、采纳</h3>
-		<img src="readmeFile/回答.gif">
-	</li>
++ 回答、采纳<br>
+![](readmeFile/回答.gif)
 
-	<li>
-		<h3>回答列表</h3>
-		<img src="readmeFile/回答列表.gif">
-	</li>
++ 回答列表<br>
+![](readmeFile/回答列表.gif)
 
-	<li>
-		<h3>提问</h3>
-		<img src="readmeFile/提问.gif">
-	</li>
++ 提问<br>
+![](readmeFile/提问.gif)
 
-	<li>
-		<h3>收藏列表</h3>
-		<img src="readmeFile/收藏列表.gif">
-	</li>
++ 收藏列表<br>
+![](readmeFile/收藏列表.gif)
 
-	<li>
-		<h3>更改头像</h3>
-		<img src="readmeFile/更改头像.gif">
-	</li>
++ 更改头像<br>
+![](readmeFile/更改头像.gif)
 
-	<li>
-		<h3>更改密码</h3>
-		<img src="readmeFile/更改密码.gif">
-	</li>
-</ul>
++ 更改密码<br>
+![](readmeFile/更改密码.gif)
 
-<h2>APP下载</h2>
-<ul>
-	<li><a href="https://raw.githubusercontent.com/l1432562823/BiHu/master/app/app-release.apk">点击下载</a></li>
-</ul>
+## APP下载
+[点击下载](https://raw.githubusercontent.com/l1432562823/BiHu/master/app/app-release.apk)
 
-<h2>开发者</h2>
-<p>Jay Li</p>
+## 开发者
+Jay Li
